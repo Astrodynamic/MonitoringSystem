@@ -1,7 +1,8 @@
 # Monitoring System
 
-Реализация проекта системы мониторинга.
+Implementation of the monitoring system project.
 
+The russian version of the task can be found in the repository.
 
 ## Contents
 
@@ -10,108 +11,157 @@
 2. [Chapter II](#chapter-ii) \
     2.1. [Information](#information)
 3. [Chapter III](#chapter-iii) \
-    3.1. [Part 1](#part-1-реализация-системы-мониторинга) \
-    3.2. [Part 2](#part-2-оповещения) \
-    3.3. [Part 3](#part-3-дополнительно-реализация-агента-со-специальными-метриками) 
+    3.1. [Part 1](#part-1-implementation-of-a-monitoring-system) \
+    3.2. [Part 2](#part-2-notifications) \
+    3.3. [Part 3](#part-3-bonus-implementation-of-an-agent-with-special-metrics) 
+3. [Chapter IV](#chapter-iv) 
 
 
-## Chapter I
+## Chapter I  
+
+![Monitoring System](misc/images/Monitoring_System.JPG)
+
+>IP Camera 10.5.6.113 
+connecting... \
+>Authorization is required: ****** \
+> \
+>Authorization granted. \
+>Reconnecting... \
+> \
+>Live | Archive \
+> \
+>Monitoring Department, Monday, 12:00
+
+The camera image was quite clear, but the necessary information was not there. You need to skip forward.
+
+>Monitoring Department, Monday, 16:17
+
+Still nothing.
+>Monitoring Department, Monday, 23:35
+
+You could have skipped this part, but even though it was so late at night, the office was full of people. That caught your attention. All of them gathered around someone's table, at which, apparently, the owner was sitting.
+Although the camera had no microphone, it was clear from what was going on that they were having a very intense conversation. \
+Suddenly, two men in uniforms that looked like guards grabbed the sitting man by his armpits and led him in an unknown direction without noticing his attempt to break free.
+The rest of the security staff searched his workplace, but without finding anything interesting or compromising, left in the same direction.
+
+>Monitoring Department, Tuesday, 10:53
+
+Nothing. Some of the tables are occupied by employees. 
+
+>Monitoring Department, Tuesday, 14:21
+
+Here it is, finally. Data to access the global monitoring system. It will be possible to analyze it and build a similar one to use for your own purposes!
 
 ## Introduction
 
-В данном проекте вам необходимо реализовать программу для простого мониторинга основных показателей системы виде ядра и агентов. Агенты должны будут собирать метрики и передавать их ядру, который логирует данные метрики. При достижении критических значений, система должна отправлять уведомления пользователю.
+In this project, you need to implement a program for simple monitoring of the main indicators of the system as kernels and agents. Agents will need to collect metrics and pass them to the kernel, which will log these metrics. When critical values are reached, the system must send notifications to the user.
 
 
 ## Chapter II
 
 ## Information
 
-**Системы мониторинга** - это обслуживающие системы постоянного наблюдения. В программной среде, такая система является метасистемой, то есть  надстройкой над некоторой системой, которая ее описывает. Мониторинг программных систем подразумевает *логирование* или *журналирование* и сбор конкретных *метрик*. Метрики сообщают вам, сколько чего-то существует, например, сколько памяти доступно в компьютерной системе или сколько сантиметров имеет длина рабочего стола. Это является основополагающим свойством метрики - ее исчислимость. В нашем случае метрики собираемые системой мониторинга, относятся к программе, программному комплексу и/или окружению, над которыми производится наблюдение. \
-*Критическими значениями* метрики называется область числовой прямой значений метрики, при достижении которой система должна выдать оповещение системному администратору. Это, очевидно, является очень полезным дополнением, позволяющим системному администратору, вместо того, чтобы смотреть на значения метрик круглые сутки, получать автоматически уведомления о критических для него значениях метрик. Это может быть, например, 95% заполненности жесткого диска, что означает, что администратору следует произвести очистку компьютера.
+**Monitoring systems** are maintenance systems for continuous surveillance. In a software environment, such a system is a metasystem, i.e. a superstructure over some system that describes it. Monitoring software systems involves *logging* and collecting specific *metrics*. Metrics tell you how much of something there is, like how much memory is available in the computer system or how many centimeters long is the desk. This is a fundamental property of the metric - its computability. In our case, the metrics collected by the monitoring system relate to the program, software package and/or environment that is being monitored. \
+The *critical values* of a metric are the area of the number line of metric values, at which the system should send a notification to the system administrator.
 
-В данной работе, вам не придется отслеживать состояние какого-либо специального программного комплекса, вместо этого вам предстоит отслеживать состояние конкретных метрик вашей операционной системы. \
-*Журналирование* подразумевает запись *логов* или *журнальных записей* исполняемого программного обеспечения в отдельный текстовый файл. Это могут быть, как и уже хорошо знакомые вам, строчки для debug'а, так и сообщения об ошибках выполнения программы или о прохождении ее ключевых этапов. В нашем случае, логи операционной системы не будут отслеживаться.
+This is obviously a very useful addition, allowing the sysadmin to be automatically notified of critical metric values, without having to look at them all day long.
+This could be, for example, notification about 95% fullness of the hard disk, which means that the administrator should clean the computer.
 
-В подавляющем большинстве случаев существующего программного обеспечения (*Zabbix*, *Grafana*, *Nagios* и т.д.), система мониторинга представляет из себя некоторое ядро, концентрирующее в себе актуальные значения метрик (обычно в специальной нереляционной базе данных) и программ-агентов, осуществляющих сбор конкретных метрик (обычно они логически разделены, например агент, работающий с метриками процессора, агент работающий с метриками аккумулятора и т.д.). Агенты представляют из себя легковесные программы, работающие в фоновом режиме и собирающие актуальные значения метрик в указанный в некотором конфигурационном файле промежуток времени. \
-В качестве агента в данной работе предлагается использовать динамические библиотеки (*.so), например, с методом `updateMetrics()`, позволяющим подгружать актуальные значения метрик, собираемые этим агентом-библиотекой. Важно, чтобы агентов могло быть не только произвольное количество, но и их можно было бы динамически подключать/отключать во время работы ядра системы мониторинга. Например, при помощи загрузки новых агентов в некоторый каталог `./agents/`. Вместо базы данных с метриками предлагается использовать единый лог-файл для всей системы мониторинга, в который периодически раз в указанное в конфигурационном файле время записывается список с актуальными значениями метрик в следующем виде:
+In this work, you won't have to monitor the status of any special software package, but instead you will have to monitor the status of specific metrics of your operating system. \
+*Logging* means recording the *logs* or *log entries* of the executable software into a separate text file.
+These can be the debug lines you are already familiar with, as well as messages about errors occurring during the program's execution or about the passage of its key stages. In our case, the operating system logs won’t be monitored.
+
+In the vast majority of cases of existing software (*Zabbix*, *Grafana*, *Nagios*, etc.), the monitoring system is a kernel that collects the actual values of metrics (usually in a special non-relational database) and agent programs that collect specific metrics (usually they are logically separated, for example, an agent working with CPU metrics, or an agent working with accumulator metrics, etc.). Agents are lightweight programs that run in the background and collect actual metrics values at a time interval specified in a configuration file. \
+
+As an agent, we suggest using dynamic libraries (*.so), for example, with the `updateMetrics()` method, which allows loading the actual metrics values collected by this agent-library. It is important that not only could there be an arbitrary number of agents, but they could also be dynamically connected/disconnected while the monitoring system kernel is running.
+For example, by loading new agents into some `./agents/` directory. Instead of a database with metrics it is suggested to use a single log-file for the whole monitoring system, in which a list with actual metrics values is written periodically at the time specified in the configuration file in the following form:
 
 ```
 [<TIMESTAMP>] | <Metric1> : <Value1> |  <Metric2> : <Value2> |  <Metric3> : <Value3> | ...
 
 ```
 
-- \<TIMESTAMP\> - временная метка в формате `yy-MM-dd HH:mm:ss`
+- \<TIMESTAMP\> - timestamp in the format `yy-M-M-dd HH:mm:ss`
 
-- \<MetricN\> - N-ная метрика
+- \<MetricN\> - Nth metric
 
-- \<ValueN\> - значение N-ной метрики
+- \<ValueN\> - value of the Nth metric
 
 
 ## Chapter III
 
-## Part 1. Реализация системы мониторинга
+## Part 1. Implementation of a monitoring system
 
-- Программа должна быть разработана на языке C++ стандарта C++17
-- Код программы должен находиться в папке src
-- Сборка программы должна быть настроена с помощью Makefile со стандартным набором целей для GNU-программ: all, install, uninstall, clean, dvi, dist, tests. Установка должна вестись в любой другой произвольный каталог
-- Классы должны быть реализованы внутри пространства имен `s21`
-- Подготовить полное покрытие unit-тестами модулей, реализующих бизнес-логику приложения, c помощью библиотеки GTest
-- Реализация с графическим пользовательским интерфейсом, на базе любой GUI-библиотеки с API для C++17: Qt, SFML, GTK+, Nanogui, Nngui и т. д.
-- Программа должна быть реализована с использованием паттерна MVC, а также:
-    - не должно быть кода бизнес-логики в коде представлений
-    - не должно быть кода интерфейса в контроллере и в модели
-    - контроллеры должны быть тонкими
-- Программа должна состоять из ядра и агентов, ядро должно периодически осуществлять вызов соотвествующих методов подключенных к нему агентов (динамические библиотеки в папке `./agents/`) и записывать актуальные метрики в виде списка в журнал системы мониторинга в папке `./logs/`. 
-- На каждый день работы системы мониторинга создается отдельный файл журнала. Файл журнала должен иметь название полной даты того дня, в который он был создан. 
-- Программа-ядро в **отдельном потоке** должна с заданной периодичностью в несколько секунд сканировать папку `./agents/` на наличие *новых* агентов, которых необходимо подключить к системе и отобразить в интерфейсе.
-- Сборка новых агентов должна осуществляться через отдельный сценарий makefile'а, настройка агентов должна осуществляться через конфигурационный файл, прилагающийся к коду агента. При инициализации, агент должен считать актуальный конфигурационный файл и сохранить настройки до конца выполнения программы или до их изменения пользователем.
-- Конфигурационный файл должен предоставлять возможность изменять:
-    - имя агента
-    - тип агента
-    - список критических значений метрик
-    - время обновления метрик
-- Необходимо предусмотреть как минимум три разных типа агентов:
-    - Агент мониторинга загрузки CPU должен иметь возможность сбора следующих метрик:
-        - `[double]` загрузка процессора (`cpu`)
-        - `[int]` количество процессов (`processes`)
-    - Агент мониторинга памяти должен иметь возможность сбора следующих метрик:
-        - `[double]` общий объем оперативной памяти (`ram_total`)
-        - `[double]` загрузка оперативной памяти в процентах (`ram`),
-        - `[double]` использование объема жесткого диска (`hard_volume`),
-        - `[int]` количество операций ввода-вывода для жесткого диска в секунду (`hard_ops`)
-        - `[double]` пропускная способность жесткого диска (`hard_throughout`)
-    - Агент мониторинга сети должен иметь возможность сбора следующих метрик:
-        - `[int : 0 -> не доступен, 1 -> доступен]` доступность адреса (`<url>`)
-        - `[double]` пропускная способность используемых сетевых интерфейсов (`inet_throughout`)
-- В конфигурационном файле метрики указываются по имени на латинице (`cpu`, `ram`, `hard_volume`, `hard_ops`, `hard_throughout`, `processors`, `processes`) или через url для метрики доступности адреса. Для каждой метрики должна иметься возможность указать критическое значение через символ равенства/неравества и число (<, <=, ==, >=, >). Например: >=2, ==100, <50 и т.д.
-- Интерфейс программы должен отображать:
-    - последние 20 строк журнала, окно журнала должно динамически обновляться каждый раз, когда в журнал осуществляется запись
-    - список подключенных агентов
-- Интерфейс программы должен позволять:
-    - получать подробную информацию об агенте:
-        - тип агента 
-        - список отслеживаемых метрик
-        - время, прошедшее с момента старта агента
-        - время обновления метрик
-    - динамически изменять конфигурацию уже запущенного агента (с сохранением в конфигурационный файл)
-    - отключать выбранного в списке агента
+- The program must be developed in C++ language of C++17 standard 
+- The program code must be located in the src folder
+- When writing code it is necessary to follow the Google style
+- The program must be built with Makefile which contains standard set of targets for GNU-programs: all, install, uninstall, clean, dvi, dist, tests. Installation directory could be arbitrary, except the building one
+- Classes must be implemented within the `s21` namespace
+- Prepare full coverage of modules that implement the business logic of the application with unit-tests using the GTest library
+- GUI implementation, based on any GUI library with API for C++17: Qt, SFML, GTK+, Nanogui, Nngui, etc.
+- The program must be implemented using the MVC pattern, and also:
+     - there should be no business code in the view code
+     - there should be no interface code in the controller and the model
+     - controllers must be thin
+- The program must consist of a kernel and agents. The kernel must periodically call the appropriate methods of the agents connected to it (dynamic libraries in the folder `./agents/`) and record actual metrics as a list in the monitoring system log in the folder `./logs/`.
+- A separate log file is created for each day of the monitoring system operation. The log file must be named with the full date of the day it was created.
+- The kernel program in a **separate thread** should scan the `./agents/` folder at specified intervals of a few seconds for *new* agents that should be connected to the system and displayed in the interface.
+- New agents must be built via a separate makefile, agent configuration must be done via the configuration file attached to the agent code. During initialization, the agent must read the actual configuration file and save the settings until the end of the program execution or until they are changed by the user.
+- The configuration file must provide the ability to change:
+    - agent name
+    - agent type
+    - list of critical metrics values
+    - metrics update time
+- At least three different types of agents must be provided:
+    - The CPU load monitoring agent must be able to collect the following metrics:
+        - `[double]` CPU load (`cpu`)
+        - `[int]` number of processes (`processes`)
+    - The memory monitoring agent must be able to collect the following metrics:
+        - `[double]` total amount of RAM (`ram_total`)
+        - `[double]` load of RAM in percent (`ram`),
+        - `[double]` usage of hard disk volume (`hard_volume`),
+        - `[int]` number of I/O operations for the hard disk per second (`hard_ops`)
+        - `[double]` hard disk throughput (`hard_throughput `)
+    - The network monitoring agent must be able to collect the following metrics:
+        - `[int : 0 -> not available, 1 -> available]` address availability (`<url>`)
+        - `[double]` throughput of used network interfaces (`inet_throughput`)
+- In the configuration file the metrics are specified by name in Latin (`cpu`, `ram`, `hard_volume`, `hard_ops`, `hard_throughput`, `processors`, `processes`) or via url for address availability metric. It should be possible to specify a critical value for each metric through the equality/non-equality symbol and the number. For example: >=2, ==100, <50, etc.
+- The program interface must display:
+    - the last 20 lines of the log, the log window must be dynamically updated each time a log entry is made
+    - list of connected agents
+- The program interface must allow:
+    - getting detailed information about the agent:
+        - agent type 
+        - list of monitored metrics
+        - time elapsed since agent's start
+        - metrics update time
+    - dynamically changing the configuration of an already running agent (with saving it to a configuration file)
+    - disconnecting the agent selected in the list
 
-## Part 2. Оповещения
+## Part 2. Notifications
 
-- Для отправки оповещения системному администратору о критической ситуации должен быть разработан простейший бот для Телеграма, отправляющий сообщение о достижении метрикой своего критического значения. Сообщение должно содержать имя компьютера (хоста), название метрики и ее значение. 
-- Предусмотреть в интерфейсе возможность включать/выключать дублирование оповещений на указанный email адрес.
-- Для реализации логики отправки сообщений в Телеграм и на почту разрешается использование любых внешних библиотек, работающих с Телеграмом и электронными письмами. 
+- To send a notification to the system administrator about a critical situation, a simple *Telegram* bot must be developed that sends a message when the metric reaches its critical value. The message must contain the name of the computer (host), the name of the metric and its value.
+- Provide the ability to enable/disable duplication of notifications to the specified *email address* in the interface.
+- It is allowed to use *any* external С++ libraries working with Telegram and emails to implement the logic of sending messages to Telegram and email.
 
-## Part 3. Дополнительно. Реализация агента со специальными метриками.
+## Part 3. Bonus. Implementation of an agent with special metrics.
 
-Реализовать еще как минимум одного агента, собирающего дополнительные метрики:
+Implement at least one more agent collecting additional metrics:
 
-- `[double]` загрузка процессора по уровням привелегий: `idle`, `user`, `priveleged`, `dpc`, `interrupt` (для каждого уровня выделить процент) (`cpu_idle_usage`, `cpu_user_usage`, ...)
-- `[double]` общий объем свопа/swap'а (`total_swap`)
-- `[double]` используемый объем свопа/swap'а (`used_swap`) 
-- `[int]` количество готовых к выполнению процессов в очереди (при необходимости прочитать про состояния процессов в *Unix*) (`proc_queue_length`)
-- `[double]` подсчет полной и свободной виртуальной памяти (`virtual_mem_volume`, `virtual_mem_free`)
-- `[int]` общее число inode'ов (`inodes`)
-- `[double]` среднее время чтения с жесткого диска (`hard_read_time`)
-- `[int]` число ошибок из системного журнала (`system_errors`)
-- `[int]` количество авторизаций пользователей (`user_auths`) 
+- `[double]` CPU load by privilege level: `idle`, `user`, `priveleged`, `dpc`, `interrupt` (output percentage for each level) (`cpu_idle_usage`, `cpu_user_usage`, ...)
+- `[double]` total swap volume (`total_swap`)
+- `[double]` amount of swap used (`used_swap`) 
+- `[int]` number of processes ready to run in the queue (read about process states in *Unix* if necessary) (`proc_queue_length`)
+- `[double]` counting full and free virtual memory (`virtual_mem_volume`, `virtual_mem_free`)
+- `[int]` total number of inodes (`inodes`)
+- `[double]` average hard disk read time (`hard_read_time`)
+- `[int]` number of errors from the system log (`system_errors`)
+- `[int]` number of user authorizations (`user_auths`)
+
+
+## Chapter IV
+
+Perfect. Monitoring the functionality will be much easier now.  
+But the situation that happened on Monday night makes you uneasy. What exactly happened there, and what was the security service looking for?
+
+Having looked closely at the footage, you find nothing that would give you an answer. Most of the people stand with their backs to the camera and without sound there is no way to recognize what the conversation was about. The only thing left on the table after security left was a little sticker that said "Seb's seat".
