@@ -165,3 +165,5 @@ Perfect. Monitoring the functionality will be much easier now.
 But the situation that happened on Monday night makes you uneasy. What exactly happened there, and what was the security service looking for?
 
 Having looked closely at the footage, you find nothing that would give you an answer. Most of the people stand with their backs to the camera and without sound there is no way to recognize what the conversation was about. The only thing left on the table after security left was a little sticker that said "Seb's seat".
+
+💡 [Tap here](https://forms.yandex.ru/u/635a9539c417f31d33315c4f/) **to leave your feedback on the projec**t. Pedago Team really tries to make your educational experience better.
