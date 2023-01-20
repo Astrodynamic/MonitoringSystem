@@ -1,0 +1,9 @@
+#ifndef MONITORING_SYSTEM_MODEL_MODEL_H_
+#define MONITORING_SYSTEM_MODEL_MODEL_H_
+
+class Model {
+ public:
+ private:
+};
+
+#endif  // MONITORING_SYSTEM_MODEL_MODEL_H_
