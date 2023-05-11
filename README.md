@@ -19,8 +19,6 @@ The russian version of the task can be found in the repository.
 
 ## Chapter I  
 
-![Monitoring System](misc/images/Monitoring_System.JPG)
-
 >IP Camera 10.5.6.113 
 connecting... \
 >Authorization is required: ****** \

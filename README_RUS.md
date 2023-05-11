@@ -18,8 +18,6 @@
 
 ## Chapter I  
 
-![Monitoring System](misc/images/Monitoring_System.JPG)
-
 >IP-Камера 10.5.6.113 подключение... \
 >Требуется авторизация: ****** \
 > \
