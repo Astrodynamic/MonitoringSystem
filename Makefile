@@ -30,6 +30,5 @@ dist: clean
 
 dvi:
 	pandoc -s ./docs/doc.tex -o ./docs/doc.html
-	open -a "Google Chrome" ./docs/doc.html
 
 .PHONY: all build rebuild unistall clean cppcheck clang-format tests dist dvi
