@@ -20,16 +20,16 @@ tests:
 	./test/build/TEST
 
 cppcheck: install
-	@cd build/; make cppcheck
+	cd build/; make cppcheck
 
 clang-format: install
-	@cd build/; make clang-format
+	cd build/; make clang-format
 
 dist: clean
 	tar -czvf MonitoringSystem.tar.gz ./*
 
 dvi:
-	pandoc -s ./docs/doc.tex -o ./docs/index.html
-	open -a "Google Chrome" ./docs/index.html
+	pandoc -s ./docs/doc.tex -o ./docs/doc.html
+	open -a "Google Chrome" ./docs/doc.html
 
 .PHONY: all build rebuild unistall clean cppcheck clang-format tests dist dvi
