@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Teem: ’Retarded children of the 2000s’" />
+  <meta name="dcterms.date" content="2023-05-12" />
+  <title>Monitoring System Documentation</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    div.abstract {
+      margin: 2em 2em 2em 2em;
+      text-align: left;
+      font-size: 85%;
+    }
+    div.abstract-title {
+      font-weight: bold;
+      text-align: center;
+      padding: 0;
+      margin-bottom: 0.5em;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Monitoring System Documentation</h1>
+<p class="author">Teem: ’Retarded children of the 2000s’</p>
+<p class="date">2023-05-12</p>
+<div class="abstract">
+<div class="abstract-title">Abstract</div>
+<p>The Monitoring System is a software project aimed at implementing a
+program for monitoring the main indicators of a system. It consists of a
+kernel and multiple agents that collect metrics and send them to the
+kernel. The kernel logs the metrics and sends notifications to the user
+when critical values are reached. This documentation provides an
+overview of the project and guides developers on how to implement and
+use the Monitoring System.</p>
+</div>
+</header>
+<h1 id="project-overview">Project Overview</h1>
+<p>The Monitoring System project involves the following components:</p>
+<ul>
+<li><p><code>Kernel</code> : The central component responsible for
+collecting metrics, logging them, and sending notifications.</p></li>
+<li><p><code>Agents</code> : Lightweight programs that collect specific
+metrics and pass them to the kernel.</p></li>
+</ul>
+<p><span>The project follows the architecture commonly used in existing
+monitoring systems like Zabbix, Grafana, and Nagios. It employs a
+kernel-agent model, where the kernel collects metrics and agents collect
+specific metrics. The agents are dynamically connected and disconnected,
+allowing flexibility in the system.</span></p>
+<h1 id="system-architecture">System Architecture</h1>
+<p>The Monitoring System architecture is based on the following
+principles:</p>
+<ul>
+<li><p><code>Kernel</code> : Collects metrics and logs them.</p></li>
+<li><p><code>Agents</code> : Collect specific metrics and send them to
+the kernel.</p></li>
+<li><p><code>Metrics</code> : Indicators to monitor, such as CPU load,
+memory usage, network throughput, etc.</p></li>
+<li><p><code>Log File</code> : Stores the actual metric values
+periodically.</p></li>
+<li><p><code>Configuration</code> : Allows customization of agent
+settings and critical metric values.</p></li>
+<li><p><code>User Interface</code> : Provides a user-friendly interface
+for displaying log entries and managing agents.</p></li>
+</ul>
+<h1 id="implementation-details">Implementation Details</h1>
+<h2 id="programming-language-and-code-structure">Programming Language
+and Code Structure</h2>
+<p>The Monitoring System is implemented in C++ using the C++17 standard.
+The code is organized in the following structure:</p>
+<ul>
+<li><p><code>src</code> folder: Contains the program code.</p></li>
+<li><p><code>Google Style Guide</code> : Code style conventions based on
+the Google C++ Style Guide must be followed.</p></li>
+</ul>
+<h2 id="building-and-installation">Building and Installation</h2>
+<p>The program must be built using a Makefile. The Makefile should
+include the following targets:</p>
+<ul>
+<li><p><code>all</code> : Builds the program.</p></li>
+<li><p><code>install</code> : Installs the program in a user-defined
+directory.</p></li>
+<li><p><code>uninstall</code> : Removes the installed program.</p></li>
+<li><p><code>clean</code> : Cleans up generated files.</p></li>
+<li><p><code>dvi</code> : Generates documentation in DVI
+format.</p></li>
+<li><p><code>dist</code> : Creates a distribution package.</p></li>
+<li><p><code>tests</code> : Runs unit tests using the GTest
+library.</p></li>
+</ul>
+<h2 id="model-view-controller-mvc-pattern">Model-View-Controller (MVC)
+Pattern</h2>
+<p>The Monitoring System follows the MVC pattern to separate business
+logic from view and controller components. The key principles of MVC
+implementation in the Monitoring System are:</p>
+<ul>
+<li><p><code>View</code> : Contains the interface code and is
+responsible for displaying information to the user. It should not
+contain any business logic.</p></li>
+<li><p><code>Controller</code> : Handles user interactions and acts as a
+mediator between the view and the model.</p></li>
+<li><p><code>Model</code> : Contains the core business logic of the
+application, including the kernel, agents, and metric
+processing.</p></li>
+</ul>
+<h2 id="logging-and-metrics">Logging and Metrics</h2>
+<p>Instead of using a database, the Monitoring System utilizes a single
+log file to store the metrics. The log file is organized as a list of
+actual metric values written periodically at the specified time
+intervals. Each log entry has the following format:</p>
+<p><code>[25.01.2023] | Metric1: Value1 | Metric2: Value2 | Metric3: Value3 | ...</code></p>
+<ul>
+<li><p><code>&lt;TIMESTAMP&gt;</code> : Timestamp in the format
+yy-M-M-dd HH:mm:ss.</p></li>
+<li><p><code>&lt;MetricN&gt;</code> : Name of the Nth metric.</p></li>
+<li><p><code>&lt;ValueN&gt;</code> : Value of the Nth metric.</p></li>
+</ul>
+<h2 id="agents-and-dynamic-libraries">Agents and Dynamic Libraries</h2>
+<p>Agents are implemented as dynamic libraries (‘*.so‘) that can be
+dynamically connected and disconnected from the kernel while it is
+running. Each agent should have an ‘updateMetrics()‘ method to load and
+provide actual metric values. Agents run in the background, collecting
+metrics at a time interval specified in the configuration file.</p>
+<h2 id="configuration-file">Configuration File</h2>
+<p>The configuration file allows customization of agent settings and
+critical metric values. It provides the ability to change the
+following:</p>
+<ul>
+<li><p><code>Agent name</code></p></li>
+<li><p><code>Agent type</code></p></li>
+<li><p><code>List of critical metric values</code></p></li>
+<li><p><code>Metrics update time</code></p></li>
+</ul>
+<h2 id="user-interface">User Interface</h2>
+<p>The Monitoring System’s user interface should provide the following
+features:</p>
+<ul>
+<li><p>Display the last 20 lines of the log, dynamically updating with
+each new log entry.</p></li>
+<li><p>Show a list of connected agents.</p></li>
+<li><p>Detailed information about each agent, including type, monitored
+metrics, time elapsed since start, and metrics update time.</p></li>
+<li><p>Dynamically change the configuration of running agents and save
+the changes to the configuration file.</p></li>
+<li><p>Disconnect selected agents from the list.</p></li>
+</ul>
+<h2 id="notifications">Notifications</h2>
+<p>To send notifications about critical situations, a Telegram bot is
+developed. The bot sends messages when metrics reach critical values,
+including the computer name, metric name, and its value. Users can
+enable/disable duplication of notifications to a specified email address
+through the interface. External C++ libraries for Telegram and email
+communication can be used to implement the notification logic.</p>
+<h2 id="additional-agent-and-metrics">Additional Agent and Metrics</h2>
+<p>The Monitoring System includes at least one additional agent that
+collects extra metrics. The additional agent should collect the
+following metrics:</p>
+<ul>
+<li><p>CPU load by privilege level : idle, user, privileged, dpc,
+interrupt (percentage for each level) (<span>cpu_idle_usage,
+cpu_user_usage, ...</span>)</p></li>
+<li><p>Total swap volume (<span>total_swap</span>)</p></li>
+<li><p>Amount of swap used (<span>used_swap</span>)</p></li>
+<li><p>Number of processes ready to run in the queue (refer to process
+states in Unix if necessary) (<span>proc_queue_length</span>)</p></li>
+<li><p>Counting full and free virtual memory (<span>virtual_mem_volume,
+virtual_mem_free</span>)</p></li>
+<li><p>Total number of inodes (<span>inodes</span>)</p></li>
+<li><p>Average hard disk read time
+(<span>hard_read_time</span>)</p></li>
+<li><p>Number of errors from the system log
+(<span>system_errors</span>)</p></li>
+<li><p>Number of user authorizations (<span>user_auths</span>)</p></li>
+</ul>
+<p><span>These additional metrics expand the monitoring capabilities of
+the system and provide more detailed information about the system’s
+performance and resource utilization.</span></p>
+<h1 class="unnumbered" id="conclusion">Conclusion</h1>
+<p>This documentation provides an overview of the Monitoring System
+project, its architecture, implementation details, and features. It
+serves as a guide for developers to understand and implement the system
+based on the provided technical requirements.</p>
+<p>By following the guidelines and utilizing the specified technologies,
+such as C++17, Makefile, Google Style Guide, and MVC pattern, developers
+can build a robust and efficient monitoring system capable of collecting
+and logging various metrics, displaying them in a user-friendly
+interface, and sending notifications when critical values are
+reached.</p>
+<p>The additional agent and metrics further enhance the system’s
+monitoring capabilities, providing a comprehensive view of the system’s
+performance and resource utilization.</p>
+<p>With this documentation as a reference, developers can proceed with
+the implementation of the Monitoring System project. It is recommended
+to follow the outlined structure, adhere to the specified programming
+language and code style guidelines, and make use of the suggested
+libraries and technologies.</p>
+<p>Throughout the development process, it’s important to focus on
+modularization, unit testing, and ensuring the separation of concerns
+between the kernel, agents, view, and controller components.
+Additionally, thorough testing and error handling should be implemented
+to ensure the system functions reliably and effectively.</p>
+<p>Remember to regularly refer back to this documentation for guidance
+and clarification. Good luck with the implementation of the Monitoring
+System project!</p>
+</body>
+</html>

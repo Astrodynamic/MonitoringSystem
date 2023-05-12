@@ -29,5 +29,7 @@ dist: clean
 	tar -czvf MonitoringSystem.tar.gz ./*
 
 dvi:
+	pandoc -s ./docs/doc.tex -o ./docs/index.html
+	open -a "Google Chrome" ./docs/index.html
 
 .PHONY: all build rebuild unistall clean cppcheck clang-format tests dist dvi
