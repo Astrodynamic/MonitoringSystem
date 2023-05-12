@@ -1,0 +1,40 @@
+# Monitoring System Documentation
+
+## Introduction
+The Monitoring System is a software project aimed at implementing a program for monitoring the main indicators of a system. It consists of a kernel and multiple agents that collect metrics and send them to the kernel. The kernel logs the metrics and sends notifications to the user when critical values are reached. This documentation provides an overview of the project and guides developers on how to implement and use the Monitoring System.
+
+## Project Overview
+The Monitoring System project involves the following components:
+- Kernel: The central component responsible for collecting metrics, logging them, and sending notifications.
+- Agents: Lightweight programs that collect specific metrics and pass them to the kernel.
+
+The project follows the architecture commonly used in existing monitoring systems like Zabbix, Grafana, and Nagios. It employs a kernel-agent model, where the kernel collects metrics and agents collect specific metrics. The agents are dynamically connected and disconnected, allowing flexibility in the system.
+
+## System Architecture
+The Monitoring System architecture is based on the following principles:
+- Kernel: Collects metrics and logs them.
+- Agents: Collect specific metrics and send them to the kernel.
+- Metrics: Indicators to monitor, such as CPU load, memory usage, network throughput, etc.
+- Log File: Stores the actual metric values periodically.
+- Configuration: Allows customization of agent settings and critical metric values.
+- User Interface: Provides a user-friendly interface for displaying log entries and managing agents.
+
+## Implementation Details
+
+### Programming Language and Code Structure
+The Monitoring System is implemented in C++ using the C++17 standard. The code is organized in the following structure:
+- `src` folder: Contains the program code.
+- Google Style Guide: Code style conventions based on the Google C++ Style Guide must be followed.
+
+### Building and Installation
+The program must be built using a Makefile. The Makefile should include the following targets:
+- `all`: Builds the program.
+- `install`: Installs the program in a user-defined directory.
+- `uninstall`: Removes the installed program.
+- `clean`: Cleans up generated files.
+- `dvi`: Generates documentation in DVI format.
+- `dist`: Creates a distribution package.
+- `tests`: Runs unit tests using the GTest library.
+
+### Model-View-Controller (MVC) Pattern
+The Monitoring System follows the MVC pattern to separate business logic from

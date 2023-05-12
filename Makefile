@@ -25,7 +25,8 @@ cppcheck: install
 clang-format: install
 	@cd build/; make clang-format
 
-dist:
+dist: clean
+	tar -czvf MonitoringSystem.tar.gz ./*
 
 dvi:
 
