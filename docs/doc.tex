@@ -1,8 +1,12 @@
-\documentclass[12pt, letterpaper]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[unicode, pdftex]{hyperref}
+\usepackage[a4paper, left=2.5cm, right=1cm, top=1cm, bottom=1.5cm]{geometry}
+
+\hypersetup{hidelinks}
 
 \title{Monitoring System Documentation}
-\author{werewolf}
+\author{Teem: 'Retarded children of the 2000s'}
 \date{\today}
 
 \begin{document}
@@ -10,6 +14,8 @@
 \maketitle
 
 \tableofcontents
+
+\newpage
 
 \begin{abstract}
 The Monitoring System is a software project aimed at implementing a program for monitoring the main indicators of a system. It consists of a kernel and multiple agents that collect metrics and send them to the kernel. The kernel logs the metrics and sends notifications to the user when critical values are reached. This documentation provides an overview of the project and guides developers on how to implement and use the Monitoring System.
@@ -23,7 +29,7 @@ The Monitoring System project involves the following components:
     \item \texttt{Agents} : Lightweight programs that collect specific metrics and pass them to the kernel.
 \end{itemize}
 
-The project follows the architecture commonly used in existing monitoring systems like Zabbix, Grafana, and Nagios. It employs a kernel-agent model, where the kernel collects metrics and agents collect specific metrics. The agents are dynamically connected and disconnected, allowing flexibility in the system.
+{\fontsize{10}{10}\selectfont The project follows the architecture commonly used in existing monitoring systems like Zabbix, Grafana, and Nagios. It employs a kernel-agent model, where the kernel collects metrics and agents collect specific metrics. The agents are dynamically connected and disconnected, allowing flexibility in the system.}
 
 \section{System Architecture}
 
@@ -68,9 +74,9 @@ The Monitoring System follows the MVC pattern to separate business logic from vi
 
 \subsection{Logging and Metrics}
 Instead of using a database, the Monitoring System utilizes a single log file to store the metrics. The log file is organized as a list of actual metric values written periodically at the specified time intervals. Each log entry has the following format:
-\begin{verbatim}
-[<TIMESTAMP>] | <Metric1> : <Value1> | <Metric2> : <Value2> | <Metric3> : <Value3> | ...
-\end{verbatim}
+
+\noindent\texttt{[25.01.2023] | Metric1: Value1 | Metric2: Value2 | Metric3: Value3 | ...}
+
 \begin{itemize}
     \item \texttt{<TIMESTAMP>} : Timestamp in the format yy-M-M-dd HH:mm:ss.
     \item \texttt{<MetricN>} : Name of the Nth metric.
@@ -116,7 +122,7 @@ The Monitoring System includes at least one additional agent that collects extra
     \item {\ttfamily [int]} Number of user authorizations ({\ttfamily user\_auths})
 \end{itemize}
 
-These additional metrics expand the monitoring capabilities of the system and provide more detailed information about the system's performance and resource utilization.
+{\fontsize{10}{10}\selectfont These additional metrics expand the monitoring capabilities of the system and provide more detailed information about the system's performance and resource utilization.}
 
 \section*{Conclusion}
 
@@ -132,4 +138,4 @@ Throughout the development process, it's important to focus on modularization, u
 
 Remember to regularly refer back to this documentation for guidance and clarification. Good luck with the implementation of the Monitoring System project!
 
-\end{document}  
+\end{document}
