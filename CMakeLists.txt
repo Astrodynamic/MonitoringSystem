@@ -21,10 +21,10 @@ qt_add_executable(${PROJECT_NAME}
 )
 
 qt_add_qml_module(${PROJECT_NAME}
-    URI WINDOW
+    URI Main
     VERSION 1.0
     QML_FILES
-    components/Main.qml
+    module/Main.qml
 )
 
 target_compile_definitions(${PROJECT_NAME}

@@ -12,6 +12,7 @@ unistall:
 	find ./ -name "build" -type d -exec rm -rf {} +
 
 clean: unistall
+	find . -name "*.user" -type f -delete
 	rm -rf ./lib/*
 
 tests:
