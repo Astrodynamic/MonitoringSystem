@@ -20,11 +20,11 @@ tests:
 	cmake --build ./test/build
 	./test/build/TEST
 
-cppcheck: install
-	cmake --build . --target cppcheck
+cppcheck:
+	cd build; make cppcheck
 
-clang-format: install
-	cmake --build . --target clang-format
+clang-format:
+	cd build; make clang-format
 
 dist: clean
 	tar -czvf MonitoringSystem.tar.gz ./*

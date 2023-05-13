@@ -28,14 +28,14 @@ qt_add_executable(${PROJECT_NAME}
     ${app_icon}
 )
 
-qt6_add_resources(${PROJECT_NAME} "qml"
+qt_add_resources(${PROJECT_NAME} "qml"
     PREFIX "/"
     BASE module
     FILES
     module/Main.qml
 )
 
-qt6_add_resources(${PROJECT_NAME} "controls"
+qt_add_resources(${PROJECT_NAME} "controls"
     PREFIX "/"
     BASE styles
     FILES
@@ -45,7 +45,6 @@ qt6_add_resources(${PROJECT_NAME} "controls"
 target_compile_options(
     ${PROJECT_NAME}
     PRIVATE
-
     # -Wall
     # -Werror
     # -Wextra
@@ -56,7 +55,6 @@ target_compile_options(
 target_link_options(
     ${PROJECT_NAME}
     PRIVATE
-
     # -fsanitize=address
 )
 
