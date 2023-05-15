@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 COMPONENTS
+    Core
     Quick
     QuickControls2
     REQUIRED
@@ -40,6 +41,7 @@ qt_add_resources(${PROJECT_NAME} "controls"
     BASE styles
     FILES
     styles/qtquickcontrols2.conf
+    # styles/qt.conf
 )
 
 target_compile_options(
@@ -64,6 +66,7 @@ target_compile_definitions(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+    Qt6::Core
     Qt6::Quick
     Qt6::QuickControls2
 )
