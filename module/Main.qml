@@ -3,7 +3,7 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 
 ApplicationWindow {
-  id: root
+  id: _root
 
   title: qsTr("Monitoring System 1.0")
 
@@ -14,10 +14,34 @@ ApplicationWindow {
 
   opacity: 0.95
 
-  Button {
-    id: button
-    x: 626
-    y: 191
-    text: qsTr("Button")
+  SwipeView {
+    id: _view
+    anchors.fill: parent
+
+    Agents {
+      id: _agents
+      color: "lightgreen"
+    }
+
+    Logs {
+      id: _logs
+      color: "lightgray"
+    }
+
+    Settings {
+      id: _settings
+      color: "lightblue"
+    }
+  }
+
+  PageIndicator {
+    id: _view_indicator
+    scale: 0.9
+
+    count: _view.count
+    currentIndex: _view.currentIndex
+
+    anchors.bottom: _view.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
   }
 }

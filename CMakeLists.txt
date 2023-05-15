@@ -34,6 +34,9 @@ qt_add_resources(${PROJECT_NAME} "qml"
     BASE module
     FILES
     module/Main.qml
+    module/Agents.qml
+    module/Logs.qml
+    module/Settings.qml
 )
 
 qt_add_resources(${PROJECT_NAME} "controls"
