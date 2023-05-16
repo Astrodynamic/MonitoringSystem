@@ -1,10 +1,14 @@
 #pragma once
 
-#include <QObject>
+#include <QAbstractListModel>
 
-class Kernel : public QObject {
+#include "agent.h"
+
+class Kernel : public QAbstractListModel {
   Q_OBJECT
  public:
   explicit Kernel(QObject *parent = nullptr);
 
+  private:
+    
 };

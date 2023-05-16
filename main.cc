@@ -1,8 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "kernel.h"
+
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
+
+  Kernel kernel;
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/Main.qml"));

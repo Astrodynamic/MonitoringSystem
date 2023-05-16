@@ -11,7 +11,6 @@ find_package(Qt6 6.2 REQUIRED COMPONENTS
     Core
     Quick
     QuickControls2
-    Charts
 )
 
 if(APPLE)
@@ -20,7 +19,24 @@ if(APPLE)
     set_source_files_properties(${app_icon} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent
+)
+
+set(HEADERS
+    model/kernel/kernel.h
+    model/agent/agent.h
+)
+
+set(SOURCES
+    model/kernel/kernel.cc
+    model/agent/agent.cc
+)
+
 set(PROJECT_RESOURCES
+    ${HEADERS}
+    ${SOURCES}
     main.cc
 )
 
@@ -73,7 +89,6 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Core
     Qt6::Quick
     Qt6::QuickControls2
-    Qt6::Charts
 )
 
 if(APPLE)
@@ -93,8 +108,6 @@ elseif(WIN32)
         LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
     )
 endif()
-
-qt_finalize_executable(${PROJECT_NAME})
 
 # Add cppcheck
 find_program(CPPCHECK cppcheck)
