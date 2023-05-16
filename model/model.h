@@ -2,6 +2,60 @@
 
 #include <QObject>
 
+#include <QObject>
+#include <QAbstractListModel>
+#include <QList>
+#include "agent.h" // Подключение заголовочного файла с определением класса агента
+
+class AgentsModel : public QAbstractListModel {
+    Q_OBJECT
+public:
+    enum AgentRoles {
+        NameRole = Qt::UserRole + 1,
+        TypeRole,
+        // Дополнительные роли агента
+    };
+
+    AgentsModel(QObject* parent = nullptr);
+
+    void addAgent(const Agent& agent);
+    void removeAgent(int index);
+    Agent agentAt(int index) const;
+
+    // Реализация методов QAbstractListModel
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+};
+
+class AgentManager : public QObject {
+    Q_OBJECT
+public:
+    AgentManager(QObject* parent = nullptr);
+
+    Q_INVOKABLE void scanAgentsFolder();
+    Q_INVOKABLE void updateMetrics();
+    Q_INVOKABLE void logMetrics(const QString& metrics);
+
+    AgentsModel* agentsModel() const;
+
+private:
+    AgentsModel* m_agentsModel;
+};
+
+class Kernel : public QObject {
+    Q_OBJECT
+public:
+    explicit Kernel(AgentManager* agentManager, QObject* parent = nullptr);
+
+    Q_INVOKABLE void updateMetrics();
+    Q_INVOKABLE void logMetrics(const QString& metrics);
+
+private:
+    AgentManager* m_agentManager;
+};
+
+
 class Kernel : public QObject {
   Q_OBJECT
 
