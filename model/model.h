@@ -1,10 +1,61 @@
 #pragma once
 
-class Kernel {
+#include <QObject>
+
+class Kernel : public QObject {
+  Q_OBJECT
+
+public:
   void scanAgentsFolder();
   void updateMetrics();
   void logMetrics(const std::string& metrics);
+
+signals:
+  void metricsUpdated(const QString& metrics);
+  void metricsLogged(const QString& logEntry);
 };
+
+void Kernel::updateMetrics() {
+  // Обновление метрик
+  QString metrics = "cpu: 80%, ram: 50%, disk: 60%";
+  
+  // Генерация сигнала о обновлении метрик
+  emit metricsUpdated(metrics);
+}
+
+void Kernel::logMetrics(const std::string& metrics) {
+  // Запись метрик в лог-файл
+  QString logEntry = QString::fromStdString(metrics);
+
+  // Генерация сигнала о записи метрик в лог-файл
+  emit metricsLogged(logEntry);
+}
+
+#include <QAbstractListModel>
+#include <QList>
+#include "agent.h" // Подключение заголовочного файла с определением класса агента
+
+class AgentsModel : public QAbstractListModel {
+    Q_OBJECT
+public:
+    enum AgentRoles {
+        NameRole = Qt::UserRole + 1,
+        TypeRole,
+        // Дополнительные роли агента
+    };
+
+    AgentsModel(QObject *parent = nullptr);
+
+    void addAgent(const Agent &agent);
+    void removeAgent(int index);
+    Agent agentAt(int index) const;
+
+    // Реализация методов QAbstractListModel
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+};
+
 
 class Agent {
  public:

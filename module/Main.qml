@@ -7,8 +7,8 @@ ApplicationWindow {
 
   title: qsTr("Monitoring System 1.0")
 
-  width: 1280
-  height: 720
+  minimumWidth: 1280
+  minimumHeight: 720
 
   visible: true
 
@@ -20,22 +20,19 @@ ApplicationWindow {
 
     Agents {
       id: _agents
-      color: "lightgreen"
     }
 
     Logs {
       id: _logs
-      color: "lightgray"
     }
 
     Settings {
       id: _settings
-      color: "lightblue"
     }
   }
 
   PageIndicator {
-    id: _view_indicator
+    id: _viewIndicator
     scale: 0.9
 
     count: _view.count
@@ -45,3 +42,8 @@ ApplicationWindow {
     anchors.horizontalCenter: parent.horizontalCenter
   }
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/
