@@ -1,8 +1,8 @@
 #include "agent_manager.h"
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-  m_data.append(CpuAgent());
-  m_data.append(CpuAgent());
+  m_data.append(new CpuAgent);
+  m_data.append(new CpuAgent);
 }
 
 int AgentManager::rowCount(const QModelIndex &parent) const {
@@ -15,9 +15,9 @@ QVariant AgentManager::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
   if (role == kNameRole) {
-    return QVariant::fromValue(m_data.at(index.row()).getSettings().m_name);
+    return QVariant::fromValue(m_data.at(index.row())->getSettings().m_name);
   } else if (role == kTypeRole) {
-    return QVariant::fromValue(m_data.at(index.row()).getSettings().m_type);
+    return QVariant::fromValue(m_data.at(index.row())->getSettings().m_type);
   }
   return QVariant();
 }
@@ -34,9 +34,9 @@ bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int 
   if (data(index, role) != value) {
     switch (role) {
       case kNameRole:
-        m_data[index.row()].getSettings().m_name = value.toString();
+        m_data[index.row()]->getSettings().m_name = value.toString();
       case kTypeRole:
-        m_data[index.row()].getSettings().m_type = value.toString();
+        m_data[index.row()]->getSettings().m_type = value.toString();
         break;
       default:
         return false;

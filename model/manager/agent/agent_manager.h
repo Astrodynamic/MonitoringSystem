@@ -25,5 +25,5 @@ class AgentManager : public QAbstractListModel {
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
  private:
-  QVector<Agent> m_data;
+  QVector<Agent *> m_data;
 };
