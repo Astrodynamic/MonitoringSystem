@@ -14,7 +14,7 @@ ColumnLayout {
       id: view
 
       width: parent.width
-      height: parent.height - button.height - parent.spacing
+      height: parent.height - parent.spacing
       spacing: 10
       model: Kernel.agentManager
       clip: true
@@ -32,31 +32,8 @@ ColumnLayout {
 
         MouseArea {
           anchors.fill: parent
-          onDoubleClicked: model.text = "Edited"
+          onDoubleClicked: model.name = "Dima vse easy"
         }
-      }
-    }
-
-    Rectangle {
-      id: button
-
-      width: 100
-      height: 40
-      anchors.horizontalCenter: parent.horizontalCenter
-      border {
-        color: "black"
-        width: 1
-      }
-
-      Text {
-        anchors.centerIn: parent
-        renderType: Text.NativeRendering
-        text: "Add"
-      }
-
-      MouseArea {
-        anchors.fill: parent
-        onClicked: Kernel.agentManager.add()
       }
     }
   }

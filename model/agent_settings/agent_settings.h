@@ -8,6 +8,19 @@
 #include <QTime>
 #include <QVariant>
 
+enum class ComparisonOperator {
+  kLessThan = 0,
+  kLessThanOrEqualTo,
+  kEqualTo,
+  kGreaterThanOrEqualTo,
+  kGreaterThan
+};
+
+struct Metric {
+  QVariant value;
+  ComparisonOperator op;
+};
+
 struct AgentSettings {
   bool m_enabled;
   QString m_name;
@@ -15,5 +28,5 @@ struct AgentSettings {
   QTime m_interval;
   QFileInfo m_config;
   QElapsedTimer m_timer;
-  QHash<QString, QPair<QString, QVariant> > m_metrics;
+  QHash<QString, Metric> m_metrics;
 };

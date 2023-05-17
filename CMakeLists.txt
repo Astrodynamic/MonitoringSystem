@@ -21,23 +21,23 @@ endif()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_settings
-    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_manager
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/agent
     ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel
-    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/agent
 )
 
 set(HEADERS
     model/agent_settings/agent_settings.h
-    model/agent_manager/agent_manager.h
+    model/manager/agent/agent_manager.h
     model/kernel/kernel.h
-    model/agent/agent.h
+    model/agents/agent/agent.h
 )
 
 set(SOURCES
     model/agent_settings/agent_settings.cc
-    model/agent_manager/agent_manager.cc
+    model/manager/agent/agent_manager.cc
     model/kernel/kernel.cc
-    model/agent/agent.cc
+    model/agents/agent/agent.cc
 )
 
 set(PROJECT_RESOURCES

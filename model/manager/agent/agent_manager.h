@@ -10,8 +10,8 @@ class AgentManager : public QAbstractListModel {
 
  public:
   enum Roles {
-    NameRole = Qt::UserRole + 1,
-    TypeRole
+    kNameRole = Qt::UserRole + 1,
+    kTypeRole
   };
 
   explicit AgentManager(QObject *parent = nullptr);
