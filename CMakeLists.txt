@@ -20,11 +20,13 @@ if(APPLE)
 endif()
 
 include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_settings
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_manager
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agent
 )
 
 set(HEADERS
+    model/agent_settings/agent_settings.h
     model/agent_manager/agent_manager.h
     model/agent/agent.h
 )
