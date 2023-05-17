@@ -14,8 +14,6 @@ class Agent {
   Agent & operator=(Agent && other) = delete;
 
   virtual QHash<QString, Metric> getMetrics() = 0;
-
-  void setSettings(const AgentSettings &settings);
   
   const AgentSettings & getSettings() const;
   AgentSettings & getSettings();

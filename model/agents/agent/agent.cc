@@ -9,7 +9,3 @@ AgentSettings & Agent::getSettings() {
 const AgentSettings & Agent::getSettings() const {
   return m_settings;
 }
-
-void Agent::setSettings(const AgentSettings &settings) {
-  m_settings = settings;
-}
