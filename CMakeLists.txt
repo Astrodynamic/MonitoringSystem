@@ -20,17 +20,17 @@ if(APPLE)
 endif()
 
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_manager
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agent
 )
 
 set(HEADERS
-    model/kernel/kernel.h
+    model/agent_manager/agent_manager.h
     model/agent/agent.h
 )
 
 set(SOURCES
-    model/kernel/kernel.cc
+    model/agent_manager/agent_manager.cc
     model/agent/agent.cc
 )
 

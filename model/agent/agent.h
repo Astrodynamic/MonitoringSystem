@@ -2,5 +2,5 @@
 
 class Agent {
  public:
-  virtual void updateMetrics() = 0;
+  virtual void updateMetrics() {};
 };

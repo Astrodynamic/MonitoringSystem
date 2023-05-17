@@ -4,14 +4,14 @@ import QtQuick.Controls 2.5
 
 ApplicationWindow {
   id: _root
-
+  
   title: qsTr("Monitoring System 1.0")
 
   minimumWidth: 1280
   minimumHeight: 720
 
   visible: true
-
+  
   opacity: 0.95
 
   SwipeView {
@@ -38,7 +38,7 @@ ApplicationWindow {
     count: _view.count
     currentIndex: _view.currentIndex
 
-    anchors.bottom: _view.bottom
+    anchors.bottom: parent.bottom
     anchors.horizontalCenter: parent.horizontalCenter
   }
 }
