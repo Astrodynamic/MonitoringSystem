@@ -2,7 +2,11 @@
 
 #include "agent.h"
 
-class NetworkAgent : public Agent {
+class NetworkAgent final : public Agent {
  public:
-  void updateMetrics() override;
+  NetworkAgent() = default;
+  explicit NetworkAgent(const AgentSettings &settings);
+  ~NetworkAgent() = default;
+
+  virtual QHash<QString, Metric> getMetrics() override final;
 };

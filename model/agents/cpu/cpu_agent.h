@@ -2,7 +2,11 @@
 
 #include "agent.h"
 
-class CpuAgent : public Agent {
+class CpuAgent final : public Agent {
  public:
-  void updateMetrics() override;
+  CpuAgent() = default;
+  explicit CpuAgent(const AgentSettings &settings);
+  ~CpuAgent() = default;
+
+  virtual QHash<QString, Metric> getMetrics() override final;
 };

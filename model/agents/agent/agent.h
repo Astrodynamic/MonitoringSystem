@@ -5,10 +5,18 @@
 class Agent {
  public:
   Agent() = default;
+  explicit Agent(const AgentSettings &settings);
+  // explicit Agent(const Agent & other) = delete;
+  // explicit Agent(Agent && other) = delete;
   virtual ~Agent() = default;
 
-  virtual QHash<QString, QPair<QVariant, QVariant>> getMetrics(){}
-  AgentSettings getSettings() const;
+  // Agent & operator=(const Agent & other) = delete;
+  // Agent & operator=(Agent && other) = delete;
+
+  virtual QHash<QString, Metric> getMetrics() { return {}; };
+  void setSettings(const AgentSettings &settings);
+  const AgentSettings & getSettings() const;
+  AgentSettings & getSettings();
 
   protected:
   AgentSettings m_settings;

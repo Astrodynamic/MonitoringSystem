@@ -2,7 +2,11 @@
 
 #include "agent.h"
 
-class MemoryAgent : public Agent {
+class MemoryAgent final : public Agent {
  public:
-  void updateMetrics() override;
+  MemoryAgent() = default;
+  explicit MemoryAgent(const AgentSettings &settings);
+  ~MemoryAgent() = default;
+
+  virtual QHash<QString, Metric> getMetrics() override final;
 };

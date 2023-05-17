@@ -20,24 +20,33 @@ if(APPLE)
 endif()
 
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/model/agent_settings
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/settings/agent
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/network
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/agent
-    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/memory
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/agent
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/cpu
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel
 )
 
 set(HEADERS
-    model/agent_settings/agent_settings.h
+    model/settings/agent/agent_settings.h
+    model/agents/network/network_agent.h
     model/manager/agent/agent_manager.h
-    model/kernel/kernel.h
+    model/agents/memory/memory_agent.h
+    model/agents/cpu/cpu_agent.h
     model/agents/agent/agent.h
+    model/kernel/kernel.h
 )
 
 set(SOURCES
-    model/agent_settings/agent_settings.cc
+    model/settings/agent/agent_settings.cc
+    model/agents/network/network_agent.cc
     model/manager/agent/agent_manager.cc
-    model/kernel/kernel.cc
+    model/agents/memory/memory_agent.cc
+    model/agents/cpu/cpu_agent.cc
     model/agents/agent/agent.cc
+    model/kernel/kernel.cc
 )
 
 set(PROJECT_RESOURCES

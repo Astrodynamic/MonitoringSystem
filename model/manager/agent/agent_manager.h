@@ -3,7 +3,7 @@
 #include <QAbstractListModel>
 #include <QtCore>
 
-#include "agent.h"
+#include "cpu_agent.h"
 
 class AgentManager : public QAbstractListModel {
   Q_OBJECT

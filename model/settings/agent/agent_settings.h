@@ -19,6 +19,7 @@ enum class ComparisonOperator {
 struct Metric {
   QVariant value;
   ComparisonOperator op;
+  QVariant comparisonValue;
 };
 
 struct AgentSettings {

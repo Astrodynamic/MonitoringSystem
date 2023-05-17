@@ -1,8 +1,8 @@
 #include "agent_manager.h"
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-  m_data.append(Agent());
-  m_data.append(Agent());
+  m_data.append(CpuAgent());
+  m_data.append(CpuAgent());
 }
 
 int AgentManager::rowCount(const QModelIndex &parent) const {
