@@ -10,7 +10,7 @@ class AgentManager : public QAbstractListModel {
 
  public:
   enum Roles {
-    NamerRole = Qt::UserRole + 1,
+    NameRole = Qt::UserRole + 1,
     TypeRole
   };
 
