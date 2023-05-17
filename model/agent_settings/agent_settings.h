@@ -9,10 +9,11 @@
 #include <QVariant>
 
 struct AgentSettings {
+  bool m_enabled;
   QString m_name;
   QString m_type;
   QTime m_interval;
   QFileInfo m_config;
   QElapsedTimer m_timer;
-  QHash<QString, QVariant> m_metrics;
+  QHash<QString, QPair<QString, QVariant> > m_metrics;
 };

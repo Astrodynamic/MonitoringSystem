@@ -16,7 +16,7 @@ ColumnLayout {
       width: parent.width
       height: parent.height - button.height - parent.spacing
       spacing: 10
-      model: AgentManager
+      model: Kernel.agentManager
       clip: true
 
       delegate: Rectangle {
@@ -56,7 +56,7 @@ ColumnLayout {
 
       MouseArea {
         anchors.fill: parent
-        onClicked: AgentManager.add()
+        onClicked: Kernel.agentManager.add()
       }
     }
   }

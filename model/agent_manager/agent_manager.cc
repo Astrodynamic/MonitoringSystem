@@ -1,13 +1,12 @@
 #include "agent_manager.h"
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-  m_data.append("old");
-  m_data.append("another old");
+  m_data.append(Agent());
+  m_data.append(Agent());
 }
 
 int AgentManager::rowCount(const QModelIndex &parent) const {
-  if (parent.isValid())
-    return 0;
+  if (parent.isValid()) return 0;
 
   return m_data.size();
 }
@@ -15,20 +14,18 @@ int AgentManager::rowCount(const QModelIndex &parent) const {
 QVariant AgentManager::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
-  switch (role) {
-    case ColorRole:
-      return QVariant(index.row() < 2 ? "orange" : "skyblue");
-    case TextRole:
-      return m_data.at(index.row());
-    default:
-      return QVariant();
+  if (role == NameRole) {
+    return QVariant::fromValue(m_data.at(index.row()).getName());
+  } else if (role == TypeRole) {
+    return QVariant::fromValue(m_data.at(index.row()).getType());
   }
+  return QVariant();
 }
 
 QHash<int, QByteArray> AgentManager::roleNames() const {
   QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-  roles[ColorRole] = "color";
-  roles[TextRole] = "text";
+  roles[NameRole] = "name";
+  roles[TypeRole] = "type";
 
   return roles;
 }
@@ -36,12 +33,12 @@ QHash<int, QByteArray> AgentManager::roleNames() const {
 bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) {
   if (data(index, role) != value) {
     switch (role) {
-    case ColorRole:
-        return false;
-    case TextRole:
-        m_data[index.row()] = value.toString();
+      case NameRole:
+        m_data[index.row()].setName(value.toString());
+      case TypeRole:
+        m_data[index.row()].setType(value.toString());
         break;
-    default:
+      default:
         return false;
     }
     emit dataChanged(index, index, QVector<int>() << role);
@@ -51,8 +48,7 @@ bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int 
 }
 
 Qt::ItemFlags AgentManager::flags(const QModelIndex &index) const {
-  if (!index.isValid())
-    return Qt::NoItemFlags;
+  if (!index.isValid()) return Qt::NoItemFlags;
 
   return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
@@ -67,14 +63,4 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
   beginRemoveRows(parent, row, row + count - 1);
   // FIXME: Implement me!
   endRemoveRows();
-}
-
-void AgentManager::add() {
-  beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-  m_data.append("new");
-  endInsertRows();
-
-  m_data[0] = QString("Size: %1").arg(m_data.size());
-  QModelIndex index = createIndex(0, 0, static_cast<void *>(0));
-  emit dataChanged(index, index);
 }

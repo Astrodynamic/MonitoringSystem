@@ -1,15 +1,17 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QStringList>
+#include <QtCore>
+
+#include "agent.h"
 
 class AgentManager : public QAbstractListModel {
   Q_OBJECT
 
  public:
   enum Roles {
-    ColorRole = Qt::UserRole + 1,
-    TextRole
+    NamerRole = Qt::UserRole + 1,
+    TypeRole
   };
 
   explicit AgentManager(QObject *parent = nullptr);
@@ -22,8 +24,6 @@ class AgentManager : public QAbstractListModel {
   virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-  Q_INVOKABLE void add();
-
  private:
-  QStringList m_data;
+  QVector<Agent> m_data;
 };

@@ -2,17 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "agent_manager.h"
+#include "kernel.h"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
-  // qmlRegisterType<Kernel>("Kernel", 1, 0, "Kernel");
-
-  AgentManager agent_manager;
+  Kernel kernel;
 
   QQmlApplicationEngine engine;
-  engine.rootContext()->setContextProperty("AgentManager", &agent_manager);
+  engine.rootContext()->setContextProperty("Kernel", &kernel);
 
   const QUrl url(QStringLiteral("qrc:/Main.qml"));
   QObject::connect(
