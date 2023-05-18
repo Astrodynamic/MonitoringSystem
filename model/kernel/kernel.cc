@@ -3,6 +3,8 @@
 Kernel::Kernel(QObject *parent)
   : QObject(parent)
   , m_agent_manager(new AgentManager(this)) {
+    AgentSettings settings;
+    m_agent_manager->registerAgent(settings);
 }
 
 Kernel::~Kernel() {

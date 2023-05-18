@@ -67,6 +67,29 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
   return true;
 }
 
-bool AgentManager::registerAgent(AgentSettings & settings) {
+bool AgentManager::registerAgent(AgentSettings &settings) {
+  QLibrary myLibrary("/opt/goinfre/werewolf/Documents/github/MonitoringSystem/agents/cpu_agent/cpu_agent.so");
+  if (!myLibrary.load()) {
+    qDebug() << myLibrary.errorString();
+    return false;
+  }
 
+  typedef Agent* (*CreateAgentFunc)(const AgentSettings&);
+  CreateAgentFunc createAgent = reinterpret_cast<CreateAgentFunc>(myLibrary.resolve("create"));
+  if (!createAgent) {
+    qDebug() << "Ошибка при получении указателя на фабричный метод";
+    return false;
+  }
+
+  Agent * agent = createAgent(settings);
+  if (!agent) {
+    qDebug() << "Ошибка при создании агента";
+    return false;
+  }
+
+  beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+  m_data.push_back(agent);
+  endInsertRows();
+
+  return true;
 }

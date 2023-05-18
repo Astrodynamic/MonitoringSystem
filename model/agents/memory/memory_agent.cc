@@ -2,7 +2,10 @@
 
 MemoryAgent::MemoryAgent(const AgentSettings &settings) : Agent(settings) {}
 
+Agent * MemoryAgent::create(const AgentSettings &settings) {
+  return new MemoryAgent(settings);
+}
+
 const QHash<QString, Metric> & MemoryAgent::getMetrics() const {
-  QHash<QString, Metric> metrics;
-  return metrics;
+  return m_settings.m_metrics;
 }
