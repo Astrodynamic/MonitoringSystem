@@ -2,8 +2,7 @@
 
 CpuAgent::CpuAgent(const AgentSettings &settings) : Agent(settings) {}
 
-QHash<QString, Metric> CpuAgent::getMetrics() {
+const QHash<QString, Metric> & CpuAgent::getMetrics() const {
   QHash<QString, Metric> metrics;
-  Metric metric;
   return metrics;
 }

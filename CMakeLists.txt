@@ -4,9 +4,6 @@ project(MonitoringSystem VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(Qt6 6.2 REQUIRED COMPONENTS
     Core
     Quick
@@ -75,6 +72,11 @@ qt_add_resources(${PROJECT_NAME} "controls"
     BASE styles
     FILES
     styles/qtquickcontrols2.conf
+)
+
+target_compile_features(${PROJECT_NAME}
+  PUBLIC
+  cxx_std_17
 )
 
 target_compile_options(

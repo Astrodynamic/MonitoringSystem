@@ -8,5 +8,5 @@ class MemoryAgent final : public Agent {
   explicit MemoryAgent(const AgentSettings &settings);
   ~MemoryAgent() = default;
 
-  virtual QHash<QString, Metric> getMetrics() override final;
+  virtual const QHash<QString, Metric> & getMetrics() const override final;
 };

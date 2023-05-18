@@ -2,8 +2,7 @@
 
 NetworkAgent::NetworkAgent(const AgentSettings &settings) : Agent(settings) {}
 
-QHash<QString, Metric> NetworkAgent::getMetrics() {
+const QHash<QString, Metric> & NetworkAgent::getMetrics() const {
   QHash<QString, Metric> metrics;
-  Metric metric;
   return metrics;
 }

@@ -13,11 +13,11 @@ class Agent {
   Agent & operator=(const Agent & other) = delete;
   Agent & operator=(Agent && other) = delete;
 
-  virtual QHash<QString, Metric> getMetrics() = 0;
+  virtual const QHash<QString, Metric> & getMetrics() const = 0;
   
   const AgentSettings & getSettings() const;
   AgentSettings & getSettings();
 
-  protected:
+ protected:
   AgentSettings m_settings;
 };

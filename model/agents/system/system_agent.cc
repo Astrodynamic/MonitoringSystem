@@ -2,8 +2,7 @@
 
 SystemAgent::SystemAgent(const AgentSettings &settings) : Agent(settings) {}
 
-QHash<QString, Metric> SystemAgent::getMetrics() {
+const QHash<QString, Metric> & SystemAgent::getMetrics() const {
   QHash<QString, Metric> metrics;
-  Metric metric;
   return metrics;
 }

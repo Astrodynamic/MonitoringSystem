@@ -8,5 +8,5 @@ class CpuAgent final : public Agent {
   explicit CpuAgent(const AgentSettings &settings);
   ~CpuAgent() = default;
 
-  virtual QHash<QString, Metric> getMetrics() override final;
+  virtual const QHash<QString, Metric> & getMetrics() const override final;
 };
