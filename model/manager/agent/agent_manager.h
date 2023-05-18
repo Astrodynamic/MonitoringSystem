@@ -2,8 +2,9 @@
 
 #include <QAbstractListModel>
 #include <QtCore>
+#include <QLibrary>
 
-#include "cpu_agent.h"
+#include "agent.h"
 
 class AgentManager : public QAbstractListModel {
   Q_OBJECT
@@ -21,8 +22,9 @@ class AgentManager : public QAbstractListModel {
   virtual QHash<int, QByteArray> roleNames() const override;
   virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
   virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
-  virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+
+  bool registerAgent(AgentSettings & settings);
 
  private:
   QVector<Agent *> m_data;

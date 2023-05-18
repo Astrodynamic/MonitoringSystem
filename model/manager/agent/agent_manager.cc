@@ -1,8 +1,6 @@
 #include "agent_manager.h"
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-  m_data.append(new CpuAgent);
-  m_data.append(new CpuAgent);
 }
 
 int AgentManager::rowCount(const QModelIndex &parent) const {
@@ -53,14 +51,22 @@ Qt::ItemFlags AgentManager::flags(const QModelIndex &index) const {
   return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool AgentManager::insertRows(int row, int count, const QModelIndex &parent) {
-  beginInsertRows(parent, row, row + count - 1);
-  // FIXME: Implement me!
-  endInsertRows();
+bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
+  if (!parent.isValid()) {
+    return false;
+  }
+
+  beginRemoveRows(parent, row, row + count - 1);
+
+  for (int i = 0; i < count; ++i) {
+    delete m_data.at(row + i);
+    m_data.removeAt(row + i);
+  }
+  endRemoveRows();
+
+  return true;
 }
 
-bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
-  beginRemoveRows(parent, row, row + count - 1);
-  // FIXME: Implement me!
-  endRemoveRows();
+bool AgentManager::registerAgent(AgentSettings & settings) {
+
 }

@@ -8,6 +8,7 @@ class Kernel : public QObject {
 
  public:
     explicit Kernel(QObject *parent = nullptr);
+    virtual ~Kernel();
 
     AgentManager *agentManager() const;
 
