@@ -68,20 +68,22 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 bool AgentManager::registerAgent(AgentSettings &settings) {
-  QLibrary myLibrary("/opt/goinfre/werewolf/Documents/github/MonitoringSystem/agents/cpu_agent/cpu_agent.so");
+  QLibrary myLibrary("/opt/goinfre/werewolf/Documents/github/MonitoringSystem/agents/cpu_agent/libcpu_agent");
   if (!myLibrary.load()) {
+    qDebug() << "Ошибка при загрузке библиотеки";
     qDebug() << myLibrary.errorString();
     return false;
   }
 
-  typedef Agent* (*CreateAgentFunc)(const AgentSettings&);
-  CreateAgentFunc createAgent = reinterpret_cast<CreateAgentFunc>(myLibrary.resolve("create"));
-  if (!createAgent) {
-    qDebug() << "Ошибка при получении указателя на фабричный метод";
+  using fn = Agent* (*)(const AgentSettings&);
+  fn newbie = reinterpret_cast<fn>(myLibrary.resolve("create"));
+  if (!newbie) {
+    qDebug() << "Ошибка при регистрации агента";
+    qDebug() << myLibrary.errorString();
     return false;
   }
 
-  Agent * agent = createAgent(settings);
+  Agent * agent = newbie(settings);
   if (!agent) {
     qDebug() << "Ошибка при создании агента";
     return false;

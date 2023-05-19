@@ -29,8 +29,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    PREFIX ""
-    SUFFIX .so
+    # PREFIX ""
+    # SUFFIX .so
     # CXX_VISIBILITY_PRESET hidden
     # VISIBILITY_INLINES_HIDDEN 1
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../agents/${PROJECT_NAME}"
@@ -59,7 +59,11 @@ target_link_options(
     # -fsanitize=address
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt6::Core)
+target_link_libraries(
+  ${PROJECT_NAME}
+  PUBLIC
+  Qt6::Core
+)
 
 # Копируем файл настроек в выходную директорию
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
