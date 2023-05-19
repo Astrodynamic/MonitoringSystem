@@ -18,6 +18,8 @@ protected:
 private:
     QFileSystemWatcher m_watcher;
     QSet<QString> m_conf_file_list;
+    QHash<QString, Metric> ReadMetrics(QVariantList metricsList);
+    ComparisonOperator ReadComparisonOperator(QString operatorName);
 private slots:
     void VerificateFile(QString new_file_way);
     void CreateAgentSetting(QString new_conf_file);
