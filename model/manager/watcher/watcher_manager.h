@@ -6,12 +6,12 @@
 #include <QObject>
 #include <QStringList>
 
-class Watcher : public QObject {
+class WatcherManager : public QObject {
   Q_OBJECT
 
  public:
-  explicit Watcher(const QString & path, QObject *parent = nullptr);
-  virtual ~Watcher();
+  explicit WatcherManager(const QString & path, QObject *parent = nullptr);
+  virtual ~WatcherManager();
 
  signals:
   void FileDetected(QString conf, QString lib);
@@ -20,7 +20,6 @@ class Watcher : public QObject {
   void setRoot(const QString &path);
 
  private slots:
-  void fileChanged(const QString &path);
   void directoryChanged(const QString &path);
 
  private:

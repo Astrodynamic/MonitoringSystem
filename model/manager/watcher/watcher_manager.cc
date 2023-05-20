@@ -1,50 +1,45 @@
 #include "watcher_manager.h"
 
-Watcher::Watcher(const QString & path, QObject *parent)
+WatcherManager::WatcherManager(const QString & path, QObject *parent)
   : QObject(parent)
   , m_watcher(new QFileSystemWatcher(this))
   , m_root{path} {
   m_watcher->addPath(m_root);
 
-  connect(m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(directoryChanged(QString)));
-  connect(m_watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+  connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, &WatcherManager::directoryChanged);
 }
 
-Watcher::~Watcher() {
+WatcherManager::~WatcherManager() {
   delete m_watcher;
 }
 
-void Watcher::setRoot(const QString &path) {
+void WatcherManager::setRoot(const QString &path) {
   m_watcher->removePath(m_root);
   m_watcher->addPath(path);
   m_root = path;
 }
 
-void Watcher::fileChanged(const QString &path) {
-  QFileInfo fileInfo(path);
+void WatcherManager::directoryChanged(const QString &path) {
+  qDebug() << "Directory changed" << path;
 
-  if (fileInfo.isFile() && fileInfo.fileName() == "settings.conf") {
-    QDir dir(fileInfo.path());
-    QStringList entries = dir.entryList(QStringList() << "*.so");
-    for (const QString& entry : entries) {
-      QString libPath = fileInfo.path() + "/" + entry;
-      QFileInfo libInfo(libPath);
-      if (libInfo.exists() && libInfo.isFile()) {
-        emit FileDetected(path, libPath);
-        m_watcher->removePath(fileInfo.path());
-        break;
+  if (path == m_root) {
+    QDir dir(path);
+    QStringList entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    for (const QString &entry : entries) {
+      QString dir_path = path + "/" + entry;
+      if (!m_watcher->directories().contains(dir_path)) {
+        m_watcher->addPath(dir_path);
       }
     }
-  } else if (fileInfo.isFile() && fileInfo.suffix() == "so") {
-    QString confPath = fileInfo.path() + "/settings.conf";
-    QFileInfo confInfo(confPath);
-    if (confInfo.exists() && confInfo.isFile()) {
-      emit FileDetected(confPath, path);
-      m_watcher->removePath(fileInfo.path());
+  } else {
+    QDir dir(path);
+    QFileInfoList c_files = dir.entryInfoList(QStringList() << "*.conf", QDir::Files | QDir::NoDotAndDotDot);
+    QFileInfoList l_files = dir.entryInfoList(QStringList() << "*.so", QDir::Files | QDir::NoDotAndDotDot);
+
+    if (!c_files.isEmpty() && !l_files.isEmpty()) {
+      emit FileDetected(c_files.at(0).absoluteFilePath(), l_files.at(0).absoluteFilePath());
+      m_watcher->removePath(path);
     }
   }
-}
-
-void Watcher::directoryChanged(const QString &path) {
-  m_watcher->addPath(path);
 }
