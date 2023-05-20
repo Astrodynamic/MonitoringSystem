@@ -26,6 +26,7 @@ clean: unistall
 define AGENT_TARGET
 $(1): $(1)_agent
 endef
+
 $(foreach agent, cpu memory network system, $(eval $(call AGENT_TARGET,$(agent))))
 
 # Agent build target pattern

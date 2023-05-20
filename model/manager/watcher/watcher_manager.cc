@@ -14,7 +14,7 @@ Watcher::~Watcher() {
   delete m_watcher;
 }
 
-void Watcher::directoryChanged(const QString &path) {
+void Watcher::setRoot(const QString &path) {
   m_watcher->removePath(m_root);
   m_watcher->addPath(path);
   m_root = path;
@@ -30,7 +30,7 @@ void Watcher::fileChanged(const QString &path) {
       QString libPath = fileInfo.path() + "/" + entry;
       QFileInfo libInfo(libPath);
       if (libInfo.exists() && libInfo.isFile()) {
-        emit FileDetected(fileInfo.path(), libPath);
+        emit FileDetected(path, libPath);
         m_watcher->removePath(fileInfo.path());
         break;
       }
@@ -39,7 +39,7 @@ void Watcher::fileChanged(const QString &path) {
     QString confPath = fileInfo.path() + "/settings.conf";
     QFileInfo confInfo(confPath);
     if (confInfo.exists() && confInfo.isFile()) {
-      emit FileDetected(confPath, fileInfo.path());
+      emit FileDetected(confPath, path);
       m_watcher->removePath(fileInfo.path());
     }
   }

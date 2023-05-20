@@ -17,7 +17,7 @@ class Watcher : public QObject {
   void FileDetected(QString conf, QString lib);
 
  public slots:
-  void directoryChanged(const QString &path);
+  void setRoot(const QString &path);
 
  private slots:
   void fileChanged(const QString &path);
