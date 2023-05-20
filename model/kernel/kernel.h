@@ -1,17 +1,19 @@
 #pragma once
 
 #include "agent_manager.h"
+#include "watcher_manager.h"
 
 class Kernel : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(AgentManager* agentManager READ agentManager CONSTANT)
+  Q_OBJECT
+  Q_PROPERTY(AgentManager *agentManager READ agentManager CONSTANT)
 
  public:
-    explicit Kernel(QObject *parent = nullptr);
-    virtual ~Kernel();
+  explicit Kernel(QObject *parent = nullptr);
+  virtual ~Kernel();
 
-    AgentManager *agentManager() const;
+  AgentManager *agentManager() const;
 
  private:
-    AgentManager *m_agent_manager;
+  AgentManager *m_agent_manager;
+  WatcherManager *m_watcher_manager;
 };
