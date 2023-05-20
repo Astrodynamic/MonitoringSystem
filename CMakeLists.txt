@@ -18,6 +18,7 @@ endif()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/watcher
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/config
     ${CMAKE_CURRENT_SOURCE_DIR}/model/settings/agent
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/agent
     ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/agent
@@ -26,6 +27,7 @@ include_directories(
 
 set(HEADERS
     model/manager/watcher/watcher_manager.h
+    model/manager/config/config_manager.h
     model/settings/agent/agent_settings.h
     model/manager/agent/agent_manager.h
     model/agents/agent/agent.h
@@ -34,6 +36,7 @@ set(HEADERS
 
 set(SOURCES
     model/manager/watcher/watcher_manager.cc
+    model/manager/config/config_manager.cc
     model/settings/agent/agent_settings.cc
     model/manager/agent/agent_manager.cc
     model/agents/agent/agent.cc

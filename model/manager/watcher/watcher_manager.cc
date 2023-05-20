@@ -20,10 +20,8 @@ void WatcherManager::setRoot(const QString &path) {
 }
 
 void WatcherManager::directoryChanged(const QString &path) {
-  qDebug() << "Directory changed" << path;
-
+  QDir dir(path);
   if (path == m_root) {
-    QDir dir(path);
     QStringList entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     for (const QString &entry : entries) {
@@ -33,12 +31,11 @@ void WatcherManager::directoryChanged(const QString &path) {
       }
     }
   } else {
-    QDir dir(path);
     QFileInfoList c_files = dir.entryInfoList(QStringList() << "*.conf", QDir::Files | QDir::NoDotAndDotDot);
     QFileInfoList l_files = dir.entryInfoList(QStringList() << "*.so", QDir::Files | QDir::NoDotAndDotDot);
 
     if (!c_files.isEmpty() && !l_files.isEmpty()) {
-      emit FileDetected(c_files.at(0).absoluteFilePath(), l_files.at(0).absoluteFilePath());
+      emit FileDetected(c_files.first().absoluteFilePath(), l_files.first().absoluteFilePath());
       m_watcher->removePath(path);
     }
   }
