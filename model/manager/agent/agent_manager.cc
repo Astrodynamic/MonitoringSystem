@@ -92,6 +92,31 @@ bool AgentManager::registerAgent(AgentSettings &settings) {
   beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
   m_data.push_back(agent);
   endInsertRows();
+/////////////////////////////////////////////////////////
+  auto way = settings.m_config.path().toStdString();
+
+  void *handle = dlopen(way.c_str(), RTLD_LAZY);
+  if (!handle) {
+      qDebug() << "Error loading library: " << dlerror();
+      return false;
+  }
+
+  // Получить указатель на функцию-фабрику
+  typedef Agent *(*create)();
+  create createFunc = (create) dlsym(handle, "create");
+  if (!createFunc) {
+      qDebug() << "Error getting symbol: " << dlerror();
+      dlclose(handle);
+      return false;
+  }
+
+  // Создать экземпляр класса
+  Agent *obj = createFunc();
+
+  // Использовать объект ...
+  obj->getMetrics();
+  // Выгрузить библиотеку
+  dlclose(handle);
 
   return true;
 }

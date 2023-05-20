@@ -18,6 +18,8 @@ class Agent {
   const AgentSettings & getSettings() const;
   AgentSettings & getSettings();
 
+  virtual Agent * create(const AgentSettings &settings);
+
  protected:
   AgentSettings m_settings;
 };
