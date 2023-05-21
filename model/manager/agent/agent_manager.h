@@ -2,8 +2,11 @@
 
 #include <QAbstractListModel>
 #include <QtCore>
-// #include <QLibrary>
+#include <QLibrary>
+#include <QLibraryInfo>
+
 #include <dlfcn.h>
+#include <iostream>
 
 #include "agent.h"
 

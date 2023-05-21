@@ -10,8 +10,8 @@ Kernel::Kernel(QObject *parent)
       qDebug() << "File detected" << conf << lib;
     });
 
-    // AgentSettings settings;
-    // m_agent_manager->registerAgent(settings);
+    AgentSettings settings;
+    m_agent_manager->registerAgent(settings);
 }
 
 Kernel::~Kernel() {
