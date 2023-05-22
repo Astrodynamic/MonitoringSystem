@@ -1,0 +1,33 @@
+{
+    "enabled": true,
+    "name": "Memory Monitor Agent",
+    "type": "Memory",
+    "metrics": [
+        {
+            "name": "ram_total",
+            "comparison": ">=",
+            "critical_value": 8
+        },
+        {
+            "name": "ram",
+            "comparison": ">=",
+            "critical_value": 80
+        },
+        {
+            "name": "hard_volume",
+            "comparison": ">=",
+            "critical_value": 80
+        },
+        {
+            "name": "hard_ops",
+            "comparison": ">=",
+            "critical_value": 100
+        },
+        {
+            "name": "hard_throughput",
+            "comparison": "<=",
+            "critical_value": 1000
+        }
+    ],
+    "interval": 30
+}

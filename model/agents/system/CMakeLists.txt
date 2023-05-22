@@ -64,6 +64,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC Qt6::Core)
 # Копируем файл настроек в выходную директорию
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    ${CMAKE_CURRENT_SOURCE_DIR}/setting.conf
+    ${CMAKE_CURRENT_SOURCE_DIR}/setting.json
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../agents/${PROJECT_NAME}
 )

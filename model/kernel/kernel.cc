@@ -8,11 +8,11 @@ Kernel::Kernel(QObject *parent)
     m_watcher_manager->setRoot("/opt/goinfre/werewolf/Documents/github/MonitoringSystem/agents");
 
     connect(m_watcher_manager, &WatcherManager::FileDetected, [this](QString conf, QString lib) {
-      qDebug() << "File detected" << conf << lib;
+      qDebug() << "File detected:" << conf << lib;
+      AgentSettings settings;
+      m_config_manager->loadConfiguration(conf, settings);
+      m_agent_manager->registerAgent(settings);
     });
-
-    AgentSettings settings;
-    m_agent_manager->registerAgent(settings);
 }
 
 Kernel::~Kernel() {

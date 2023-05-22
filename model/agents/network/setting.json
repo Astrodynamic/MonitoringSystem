@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Network Monitor Agent",
+  "type": "Network",
+  "metrics": [
+    {
+      "name": "",
+      "comparison": "==",
+      "critical_value": "1"
+    },
+    {
+      "name": "inet_throughput",
+      "comparison": ">=",
+      "critical_value": "1000"
+    }
+  ],
+  "interval": 60
+}

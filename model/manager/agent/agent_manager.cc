@@ -98,38 +98,6 @@ QLibrary myLibrary(libName);
   beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
   m_data.push_back(agent);
   endInsertRows();
-    /////////////////////////////////////////////////////////
-
-
-
-//
-
-
-//    auto way = libName.toStdString();
-
-//    void* handle = dlopen(way.c_str(), RTLD_LAZY);
-
-//    if (!handle) { // проверка ошибок при открытии библиотеки
-//        qDebug() << "Cannot open library: " << dlerror() << '\n';
-//        return 1;
-//    }
-
-
-
-
-
-//    void (*sayHello)() = reinterpret_cast<void (*)()>(dlsym(handle, "_ZN13Lib_cpu_agent8sayHelloEv"));
-
-//    if (!sayHello) { // проверка ошибок при получении указателя на функцию
-//        qDebug() <<  "Cannot load symbol 'sayHello': " << dlerror() << '\n';
-//        dlclose(handle);
-//        return 1;
-//    }
-
-//    sayHello();
-//    // закрываем динамическую библиотеку
-//    dlclose(handle);
-
 
   return true;
 }

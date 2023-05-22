@@ -4,27 +4,45 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent) {}
 
 ConfigurationManager::~ConfigurationManager() {}
 
-bool ConfigurationManager::loadConfiguration(QString & path, AgentSettings &settings) {
-  QSettings config(path, QSettings::IniFormat);
-  
-  settings.m_enabled = config.value("enabled", true).toBool();
-  settings.m_name = config.value("name").toString();
-  settings.m_type = config.value("type").toString();
-  settings.m_interval = QTime::fromString(config.value("interval").toString(), "s");
-  
-  QStringList metricConfigs = config.value("metrics").toStringList();
-  for (const QString &metricConfig : metricConfigs) {
-    QJsonDocument metricDoc = QJsonDocument::fromJson(metricConfig.toUtf8());
-    QJsonObject metricObj = metricDoc.object();
+bool ConfigurationManager::loadConfiguration(const QString &path, AgentSettings &settings) {
+  QFile file(path);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    qDebug() << "Не удалось открыть файл:" << file.errorString();
+    return false;
+  }
 
-    QString metricName = metricObj.value("name").toString();
-    QString comparisonOperator = metricObj.value("comparison").toString();
-    QString criticalValue = metricObj.value("critical_value").toString();
+  const QJsonDocument json = QJsonDocument::fromJson(QByteArray(file.readAll()));
+  if (json.isNull()) {
+    qDebug() << "Ошибка при разборе JSON-документа.";
+    return false;
+  }
 
-    Metric metric;
-    metric.op = stringToComparisonOperator(comparisonOperator);
-    metric.comparisonValue = criticalValue.toDouble();
-    settings.m_metrics.insert(metricName, metric);
+  file.close();
+
+  QJsonObject root = json.object();
+
+  settings.m_enabled = root.value("enabled").toBool();
+  settings.m_name = root.value("name").toString();
+  settings.m_type = root.value("type").toString();
+
+  settings.m_interval = QTime(0, 0).addSecs(root.value("interval").toInt());
+
+  QJsonArray metrics = root.value("metrics").toArray();
+
+  static const QMap<QString, ComparisonOperator> op = {
+      {">=", ComparisonOperator::kGreaterThanOrEqualTo},
+      {">", ComparisonOperator::kGreaterThan},
+      {"<=", ComparisonOperator::kLessThanOrEqualTo},
+      {"<", ComparisonOperator::kLessThan},
+      {"==", ComparisonOperator::kEqualTo}
+  };
+
+  for (const QJsonValue &metric : metrics) {
+    const QJsonObject metricObject = metric.toObject();
+    settings.m_metrics[metricObject.value("name").toString()] =
+        Metric{metricObject.value("value").toVariant(),
+               op[metricObject.value("comparison").toString()],
+               metricObject.value("critical_value").toVariant()};
   }
 
   return true;
