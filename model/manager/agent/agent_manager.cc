@@ -1,4 +1,6 @@
 #include "agent_manager.h"
+#include <QObject>
+#include <QLibrary>
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
 }
@@ -68,20 +70,24 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 bool AgentManager::registerAgent(AgentSettings &settings) {
-  QLibrary myLibrary("/opt/goinfre/werewolf/Documents/github/MonitoringSystem/agents/cpu_agent/libcpu_agent");
+    QString libName = "/opt/goinfre/ajhin/github/MonitoringSystem/testF/build-lib_cpu_agent-Desktop_x86_darwin_generic_mach_o_64bit-Debug/liblib_cpu_agent.dylib";
+
+QLibrary myLibrary(libName);
   if (!myLibrary.load()) {
     qDebug() << "Ошибка при загрузке библиотеки";
     qDebug() << myLibrary.errorString();
     return false;
   }
 
+
   using fn = Agent* (*)(const AgentSettings&);
-  fn newbie = reinterpret_cast<fn>(myLibrary.resolve("create"));
+  fn newbie = reinterpret_cast<fn>(myLibrary.resolve("_ZN13Lib_cpu_agent8sayHelloEv"));
   if (!newbie) {
     qDebug() << "Ошибка при регистрации агента";
     qDebug() << myLibrary.errorString();
     return false;
   }
+
 
   Agent * agent = newbie(settings);
   if (!agent) {
@@ -92,6 +98,38 @@ bool AgentManager::registerAgent(AgentSettings &settings) {
   beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
   m_data.push_back(agent);
   endInsertRows();
+    /////////////////////////////////////////////////////////
+
+
+
+//
+
+
+//    auto way = libName.toStdString();
+
+//    void* handle = dlopen(way.c_str(), RTLD_LAZY);
+
+//    if (!handle) { // проверка ошибок при открытии библиотеки
+//        qDebug() << "Cannot open library: " << dlerror() << '\n';
+//        return 1;
+//    }
+
+
+
+
+
+//    void (*sayHello)() = reinterpret_cast<void (*)()>(dlsym(handle, "_ZN13Lib_cpu_agent8sayHelloEv"));
+
+//    if (!sayHello) { // проверка ошибок при получении указателя на функцию
+//        qDebug() <<  "Cannot load symbol 'sayHello': " << dlerror() << '\n';
+//        dlclose(handle);
+//        return 1;
+//    }
+
+//    sayHello();
+//    // закрываем динамическую библиотеку
+//    dlclose(handle);
+
 
   return true;
 }
