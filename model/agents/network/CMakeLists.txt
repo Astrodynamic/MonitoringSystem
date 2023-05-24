@@ -33,7 +33,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     SUFFIX .so
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN 1
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../agents/${PROJECT_NAME}"
+    LIBRARY_OUTPUT_DIRECTORY ${LBD_TARGET}/agents/${PROJECT_NAME}
 )
 
 target_compile_features(${PROJECT_NAME}
@@ -65,5 +65,5 @@ target_link_libraries(${PROJECT_NAME} PUBLIC Qt6::Core)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
     ${CMAKE_CURRENT_SOURCE_DIR}/setting.json
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../agents/${PROJECT_NAME}
+    ${LBD_TARGET}/agents/${PROJECT_NAME}
 )

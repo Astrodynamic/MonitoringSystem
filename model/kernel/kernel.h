@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QDir>
+
 #include "agent_manager.h"
 #include "config_manager.h"
 #include "watcher_manager.h"
