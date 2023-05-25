@@ -9,7 +9,7 @@ Kernel::Kernel(QObject *parent)
   connect(m_watcher_manager, &WatcherManager::FileDetected, [this](const QString conf, QString lib) {
             AgentSettings settings;
             m_config_manager->loadConfiguration(conf, settings);
-            m_agent_manager->registerAgent(settings);
+            m_agent_manager->registerAgent(lib, settings);
           });
 
   m_watcher_manager->setRoot(QString(BUILD_DIR) + QDir::separator() + "agents");

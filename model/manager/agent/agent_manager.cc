@@ -65,7 +65,7 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
   return true;
 }
 
-bool AgentManager::registerAgent(AgentSettings &settings) {
+bool AgentManager::registerAgent(const QString &path, AgentSettings &settings) {
     QString libName = "/opt/goinfre/ajhin/github/MonitoringSystem/testF/build-lib_cpu_agent-Desktop_x86_darwin_generic_mach_o_64bit-Debug/liblib_cpu_agent.dylib";
 
 QLibrary myLibrary(libName);

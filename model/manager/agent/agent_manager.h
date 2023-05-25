@@ -25,7 +25,7 @@ class AgentManager : public QAbstractListModel {
   virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
   virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-  bool registerAgent(AgentSettings & settings);
+  bool registerAgent(const QString &path, AgentSettings & settings);
 
  private:
   QVector<Agent *> m_data;
