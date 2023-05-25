@@ -14,9 +14,17 @@ WatcherManager::~WatcherManager() {
 }
 
 void WatcherManager::setRoot(const QString &path) {
-  m_watcher->removePath(m_root);
-  m_watcher->addPath(path);
-  m_root = path;
+  if (m_root != path) {
+    m_watcher->removePath(m_root);
+    m_watcher->addPath(path);
+    m_root = path;
+
+    QDir dir(m_root);
+    QStringList entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QString &entry : entries) {
+      directoryChanged(path + "/" + entry);
+    }
+  }
 }
 
 void WatcherManager::directoryChanged(const QString &path) {
