@@ -1,0 +1,78 @@
+{
+  "enabled": true,
+  "name": "System Monitor Agent",
+  "type": "System",
+  "metrics": [
+    {
+      "name": "cpu_idle_usage",
+      "comparison": "<=",
+      "critical_value": 20
+    },
+    {
+      "name": "cpu_user_usage",
+      "comparison": ">=",
+      "critical_value": 80
+    },
+    {
+      "name": "cpu_privileged_usage",
+      "comparison": ">=",
+      "critical_value": 10
+    },
+    {
+      "name": "cpu_dpc_usage",
+      "comparison": ">=",
+      "critical_value": 5
+    },
+    {
+      "name": "cpu_interrupt_usage",
+      "comparison": ">=",
+      "critical_value": 1
+    },
+    {
+      "name": "total_swap",
+      "comparison": ">=",
+      "critical_value": 1024
+    },
+    {
+      "name": "used_swap",
+      "comparison": ">=",
+      "critical_value": 512
+    },
+    {
+      "name": "proc_queue_length",
+      "comparison": ">=",
+      "critical_value": 10
+    },
+    {
+      "name": "virtual_mem_volume",
+      "comparison": ">=",
+      "critical_value": 1024
+    },
+    {
+      "name": "virtual_mem_free",
+      "comparison": ">=",
+      "critical_value": 256
+    },
+    {
+      "name": "inodes",
+      "comparison": ">=",
+      "critical_value": 1000
+    },
+    {
+      "name": "hard_read_time",
+      "comparison": "<=",
+      "critical_value": 10
+    },
+    {
+      "name": "system_errors",
+      "comparison": ">=",
+      "critical_value": 10
+    },
+    {
+      "name": "user_auths",
+      "comparison": ">=",
+      "critical_value": 100
+    }
+  ],
+  "interval": 60
+}

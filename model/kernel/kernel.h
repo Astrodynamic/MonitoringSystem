@@ -1,6 +1,9 @@
 #pragma once
 
+#include <QDir>
+
 #include "agent_manager.h"
+#include "config_manager.h"
 #include "watcher_manager.h"
 
 class Kernel : public QObject {
@@ -16,4 +19,5 @@ class Kernel : public QObject {
  private:
   AgentManager *m_agent_manager;
   WatcherManager *m_watcher_manager;
+  ConfigurationManager *m_config_manager;
 };

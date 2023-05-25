@@ -2,6 +2,7 @@
 
 Agent::Agent(const AgentSettings &settings) : m_settings(settings) {}
 
+
 AgentSettings & Agent::getSettings() {
   return m_settings;
 }

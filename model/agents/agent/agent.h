@@ -1,10 +1,10 @@
 #pragma once
 
 #include "agent_settings.h"
+
 class Agent {
 public:
   Agent() = default;
-  explicit Agent(const AgentSettings &settings);
   explicit Agent(const Agent & other) = delete;
   explicit Agent(Agent && other) = delete;
   virtual ~Agent() = default;
@@ -16,6 +16,7 @@ public:
   
   const AgentSettings & getSettings() const;
   AgentSettings & getSettings();
+  void setSettings(const AgentSettings &);
 
  protected:
   AgentSettings m_settings;

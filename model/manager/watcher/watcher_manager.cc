@@ -31,7 +31,7 @@ void WatcherManager::directoryChanged(const QString &path) {
       }
     }
   } else {
-    QFileInfoList c_files = dir.entryInfoList(QStringList() << "*.conf", QDir::Files | QDir::NoDotAndDotDot);
+    QFileInfoList c_files = dir.entryInfoList(QStringList() << "*.json", QDir::Files | QDir::NoDotAndDotDot);
     QFileInfoList l_files = dir.entryInfoList(QStringList() << "*.so", QDir::Files | QDir::NoDotAndDotDot);
 
     if (!c_files.isEmpty() && !l_files.isEmpty()) {

@@ -54,6 +54,10 @@ qt_add_executable(${PROJECT_NAME}
     ${app_icon}
 )
 
+add_definitions(
+    -DBUILD_DIR="${CMAKE_BINARY_DIR}"
+)
+
 qt_add_resources(${PROJECT_NAME} "qml"
     PREFIX "/"
     BASE module
@@ -122,6 +126,12 @@ elseif(WIN32)
         LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
     )
 endif()
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD COMMAND
+    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/agents
+)
 
 # Add cppcheck
 find_program(CPPCHECK cppcheck)
