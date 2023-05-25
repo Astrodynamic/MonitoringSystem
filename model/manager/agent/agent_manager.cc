@@ -67,20 +67,21 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
   return true;
 }
 
-bool AgentManager::registerAgent(AgentSettings &settings) {
-    QString libName = "/opt/goinfre/ajhin/github/MonitoringSystem/build/agents/cpu_agent/cpu_agent.so";
-    QPluginLoader plugin(libName);
+bool AgentManager::registerAgent(const QString &path, AgentSettings &settings) {
+    QPluginLoader plugin(path);
 
     if (!plugin.load()) {
         qDebug() << "Плагин не загружен";
+        return false;
     }
 
     Agent* pluginInterface = qobject_cast<Agent *>(plugin.instance());
-    if (pluginInterface) {
-      pluginInterface->setSettings(settings);
-      pluginInterface->getMetrics();
+    if (!pluginInterface) {
+      return false;
     }
 
+    pluginInterface->setSettings(settings);
+    pluginInterface->getMetrics();
   //beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
   //m_data.push_back(agent);
   //endInsertRows();
