@@ -1,6 +1,6 @@
 {
   "MetaData": {
-    "Name": "Agent",
+    "Name": "Cpu_Agent",
     "Version": "1.0",
     "Compatibility": [
       "Qt5.14"
