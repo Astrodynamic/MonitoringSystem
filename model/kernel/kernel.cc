@@ -3,7 +3,7 @@
 Kernel::Kernel(QObject *parent)
     : QObject(parent),
       m_agent_manager(new AgentManager(this)),
-      m_watcher_manager(new WatcherManager(QString(BUILD_DIR) + QDir::separator() + "agents", this)),
+      m_watcher_manager(new WatcherManager(QString(BUILD_DIR), this)),
       m_config_manager(new ConfigurationManager(this)) {
 
   connect(m_watcher_manager, &WatcherManager::FileDetected, [this](const QString conf, QString lib) {
@@ -11,6 +11,8 @@ Kernel::Kernel(QObject *parent)
             m_config_manager->loadConfiguration(conf, settings);
             m_agent_manager->registerAgent(settings);
           });
+
+  m_watcher_manager->setRoot(QString(BUILD_DIR) + QDir::separator() + "agents");
 }
 
 Kernel::~Kernel() {
