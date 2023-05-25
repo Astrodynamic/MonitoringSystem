@@ -2,6 +2,8 @@
 #include <QObject>
 #include <QLibrary>
 
+#include <QtPlugin>
+
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
 }
 
@@ -70,40 +72,34 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 bool AgentManager::registerAgent(AgentSettings &settings) {
-    QString libName = "/opt/goinfre/ajhin/github/MonitoringSystem/testF/build-lib_cpu_agent-Desktop_x86_darwin_generic_mach_o_64bit-Debug/liblib_cpu_agent.dylib";
+    QString libName = "/opt/goinfre/ajhin/github/MonitoringSystem/testF/build-cpu_agent-Desktop_x86_darwin_generic_mach_o_64bit-Debug/libcpu_agent.dylib";
 
-QLibrary myLibrary(libName);
-  if (!myLibrary.load()) {
-    qDebug() << "Ошибка при загрузке библиотеки";
-    qDebug() << myLibrary.errorString();
-    return false;
-  }
+//QLibrary myLibrary(libName);
+//  if (!myLibrary.load()) {
+//    qDebug() << "Ошибка при загрузке библиотеки";
+//    qDebug() << myLibrary.errorString();
+//    return false;
+//  }
+
+//  using fn = Agent* (*)(const AgentSettings&);
+//  fn newbie = reinterpret_cast<fn>(myLibrary.resolve("_ZN13Lib_cpu_agent8sayHelloEv"));
+//  if (!newbie) {
+//    qDebug() << "Ошибка при регистрации агента";
+//    qDebug() << myLibrary.errorString();
+//    return false;
+//  }
 
 
-  using fn = Agent* (*)(const AgentSettings&);
-  fn newbie = reinterpret_cast<fn>(myLibrary.resolve("_ZN13Lib_cpu_agent8sayHelloEv"));
-  if (!newbie) {
-    qDebug() << "Ошибка при регистрации агента";
-    qDebug() << myLibrary.errorString();
-    return false;
-  }
+//  Agent * agent = newbie(settings);
+//  if (!agent) {
+//    qDebug() << "Ошибка при создании агента";
+//    return false;
+//  }
 
-
-  Agent * agent = newbie(settings);
-  if (!agent) {
-    qDebug() << "Ошибка при создании агента";
-    return false;
-  }
-
-  beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-  m_data.push_back(agent);
-  endInsertRows();
+//  beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+//  m_data.push_back(agent);
+//  endInsertRows();
     /////////////////////////////////////////////////////////
-
-
-
-//
-
 
 //    auto way = libName.toStdString();
 
@@ -130,6 +126,22 @@ QLibrary myLibrary(libName);
 //    // закрываем динамическую библиотеку
 //    dlclose(handle);
 
+//////////////////////////////////////
 
-  return true;
+
+
+    QPluginLoader plugin(libName);
+
+    if (!plugin.load()) {
+        qDebug() << "Плагин не загружен";
+    }
+
+    Agent* pluginInterface = qobject_cast<Agent *>(plugin.instance());
+    if (pluginInterface) {
+        pluginInterface->getMetrics();
+    }
+
+
+
+    return true;
 }

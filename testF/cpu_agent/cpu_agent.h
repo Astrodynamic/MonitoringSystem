@@ -1,5 +1,15 @@
 #pragma once
 
+#include <QtPlugin>
+#include <QDebug>
+#include <QObject>
+
+#include "agent.h"
+
+#define PLUGIN_NAME "agent.json"
+
+#pragma once
+
 #include "agent.h"
 
 class CpuAgent final : public QObject, public Agent {
@@ -13,3 +23,4 @@ class CpuAgent final : public QObject, public Agent {
 
   virtual const QHash<QString, Metric> & getMetrics() const override final;
 };
+

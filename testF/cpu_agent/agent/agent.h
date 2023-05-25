@@ -13,7 +13,7 @@ public:
   Agent & operator=(Agent && other) = delete;
 
   virtual const QHash<QString, Metric> & getMetrics() const = 0;
-  
+
   const AgentSettings & getSettings() const;
   AgentSettings & getSettings();
 

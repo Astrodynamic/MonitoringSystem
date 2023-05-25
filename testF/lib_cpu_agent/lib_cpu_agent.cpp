@@ -1,6 +1,7 @@
 #include "lib_cpu_agent.h"
+#include <QDebug>
 
-void Lib_cpu_agent::sayHello()
+void Cpu_agent::doSomething()
 {
-    qDebug() << "Hello world!";
+    qDebug() << "Hello from MyPlugin!";
 }

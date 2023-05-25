@@ -1,0 +1,21 @@
+{
+  "MetaData": {
+    "Name": "Agent",
+    "Version": "1.0",
+    "Compatibility": [
+      "Qt5.14"
+    ],
+    "Dependencies": [
+      "QtCore",
+      "QtGui"
+    ],
+    "Author": {
+      "Name": "John Doe",
+      "Email": "johndoe@example.com"
+    },
+    "Description": "A plugin that does something useful."
+  },
+  "implements": [
+    "Agent"
+  ]
+}
