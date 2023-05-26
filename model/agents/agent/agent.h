@@ -9,13 +9,13 @@ public:
   explicit Agent(Agent && other) = delete;
   virtual ~Agent() = default;
 
-  Agent & operator=(const Agent & other) = delete;
-  Agent & operator=(Agent && other) = delete;
+  auto operator=(const Agent & other) -> Agent & = delete;
+  auto operator=(Agent && other) -> Agent & = delete;
 
-  virtual const QHash<QString, Metric> & Metrics() const = 0;
+  virtual auto Metrics() const -> const QHash<QString, Metric> & = 0;
   
-  const AgentSettings & Settings() const;
-  AgentSettings & Settings();
+  auto Settings() const -> const AgentSettings &;
+  auto Settings() -> AgentSettings &;
 
  protected:
   AgentSettings m_settings;

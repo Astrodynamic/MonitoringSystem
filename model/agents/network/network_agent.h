@@ -8,7 +8,5 @@ class NetworkAgent final : public Agent {
   explicit NetworkAgent(const AgentSettings &settings);
   ~NetworkAgent() = default;
 
-  static Agent * create(const AgentSettings &settings);
-
-  virtual const QHash<QString, Metric> & Metrics() const override final;
+  virtual auto Metrics() const -> const QHash<QString, Metric> & override final;
 };

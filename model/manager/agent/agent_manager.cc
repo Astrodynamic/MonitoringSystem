@@ -5,13 +5,13 @@
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
 }
 
-int AgentManager::rowCount(const QModelIndex &parent) const {
+auto AgentManager::rowCount(const QModelIndex &parent) const -> int {
   if (parent.isValid()) return 0;
 
   return m_data.size();
 }
 
-QVariant AgentManager::data(const QModelIndex &index, int role) const {
+auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
   if (!index.isValid()) return QVariant();
 
   AgentSettings &settings = m_data.at(index.row())->Settings();
@@ -24,7 +24,7 @@ QVariant AgentManager::data(const QModelIndex &index, int role) const {
   return QVariant();
 }
 
-QHash<int, QByteArray> AgentManager::roleNames() const {
+auto AgentManager::roleNames() const -> QHash<int, QByteArray> {
   static QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
   roles[kNameRole] = "name";
   roles[kTypeRole] = "type";
@@ -32,7 +32,7 @@ QHash<int, QByteArray> AgentManager::roleNames() const {
   return roles;
 }
 
-bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) {
+auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) -> bool {
   AgentSettings &settings = m_data[index.row()]->Settings();
   if (role == kNameRole) {
     settings.m_name = value.toString();
@@ -45,13 +45,13 @@ bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int 
   return true;
 }
 
-Qt::ItemFlags AgentManager::flags(const QModelIndex &index) const {
+auto AgentManager::flags(const QModelIndex &index) const -> Qt::ItemFlags {
   if (!index.isValid()) return Qt::NoItemFlags;
 
   return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
+auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> bool {
   if (!parent.isValid()) {
     return false;
   }
@@ -67,7 +67,7 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
   return true;
 }
 
-bool AgentManager::registerAgent(const QString &path, AgentSettings &settings) {
+auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -> bool {
 
     return true;
 }

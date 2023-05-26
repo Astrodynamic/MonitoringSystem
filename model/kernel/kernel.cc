@@ -21,6 +21,6 @@ Kernel::~Kernel() {
   delete m_config_manager;
 }
 
-AgentManager *Kernel::agentManager() const {
+auto Kernel::agentManager() const -> AgentManager * {
   return m_agent_manager;
 }

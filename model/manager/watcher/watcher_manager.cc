@@ -13,7 +13,7 @@ WatcherManager::~WatcherManager() {
   delete m_watcher;
 }
 
-void WatcherManager::setRoot(const QString &path) {
+auto WatcherManager::setRoot(const QString &path) -> void {
   if (m_root != path) {
     m_watcher->removePath(m_root);
     m_watcher->addPath(path);
@@ -27,7 +27,7 @@ void WatcherManager::setRoot(const QString &path) {
   }
 }
 
-void WatcherManager::directoryChanged(const QString &path) {
+auto WatcherManager::directoryChanged(const QString &path) -> void {
   QDir dir(path);
   if (path == m_root) {
     QStringList entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);

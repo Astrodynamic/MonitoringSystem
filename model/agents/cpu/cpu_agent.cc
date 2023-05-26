@@ -1,5 +1,5 @@
 #include "cpu_agent.h"
 
-const QHash<QString, Metric> & CpuAgent::Metrics() const {
+auto CpuAgent::Metrics() const -> const QHash<QString, Metric> & {
   return m_settings.m_metrics;
 }

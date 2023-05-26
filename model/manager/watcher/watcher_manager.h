@@ -14,13 +14,13 @@ class WatcherManager : public QObject {
   virtual ~WatcherManager();
 
  signals:
-  void FileDetected(QString conf, QString lib);
+  auto FileDetected(QString conf, QString lib) -> void;
 
  public slots:
-  void setRoot(const QString &path);
+  auto setRoot(const QString &path) -> void;
 
  private slots:
-  void directoryChanged(const QString &path);
+  auto directoryChanged(const QString &path) -> void;
 
  private:
   QFileSystemWatcher *m_watcher;

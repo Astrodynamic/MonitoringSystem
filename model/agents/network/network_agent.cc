@@ -2,10 +2,6 @@
 
 NetworkAgent::NetworkAgent(const AgentSettings &settings) : Agent(settings) {}
 
-Agent * NetworkAgent::create(const AgentSettings &settings) {
-  return new NetworkAgent(settings);
-}
-
-const QHash<QString, Metric> & NetworkAgent::Metrics() const {
+auto NetworkAgent::Metrics() const -> const QHash<QString, Metric> & {
   return m_settings.m_metrics;
 }

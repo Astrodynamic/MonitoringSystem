@@ -4,7 +4,7 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent) {}
 
 ConfigurationManager::~ConfigurationManager() {}
 
-bool ConfigurationManager::loadConfiguration(const QString &path, AgentSettings &settings) {
+auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings &settings) -> bool {
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     qDebug() << "Не удалось открыть файл:" << file.errorString();
