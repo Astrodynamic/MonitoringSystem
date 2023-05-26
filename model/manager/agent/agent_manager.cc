@@ -2,7 +2,9 @@
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {}
 
-AgentManager::~AgentManager() {}
+AgentManager::~AgentManager() {
+  removeRows(0, m_data.size());
+}
 
 auto AgentManager::rowCount(const QModelIndex &parent) const -> int {
   if (parent.isValid()) return 0;
@@ -15,28 +17,54 @@ auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
 
   AgentSettings &settings = m_data.at(index.row()).second->Settings();
 
-  if (role == kNameRole) {
+  if (role == kEnabledRole) {
+    return QVariant::fromValue(settings.m_enabled);
+  } else if (role == kNameRole) {
     return QVariant::fromValue(settings.m_name);
   } else if (role == kTypeRole) {
     return QVariant::fromValue(settings.m_type);
+  } else if (role == kIntervalRole) {
+    return QVariant::fromValue(settings.m_interval);
+  } else if (role == kConfigRole) {
+    return QVariant::fromValue(settings.m_config);
+  } else if (role == kTimerRole) {
+    return QVariant::fromValue(settings.m_timer);
+  } else if (role == kMetricsRole) {
+    return QVariant::fromValue(settings.m_metrics);
   }
   return QVariant();
 }
 
 auto AgentManager::roleNames() const -> QHash<int, QByteArray> {
-  static QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-  roles[kNameRole] = "name";
-  roles[kTypeRole] = "type";
+  static const QHash<int, QByteArray> roles{
+    {kEnabledRole, "enabled"},
+    {kNameRole, "name"},
+    {kTypeRole, "type"},
+    {kIntervalRole, "interval"},
+    {kConfigRole, "config"},
+    {kTimerRole, "timer"},
+    {kMetricsRole, "metrics"}
+  };
 
   return roles;
 }
 
 auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) -> bool {
   AgentSettings &settings = m_data[index.row()].second->Settings();
-  if (role == kNameRole) {
+  if (role == kEnabledRole) {
+    settings.m_enabled = value.toBool();
+  } else if (role == kNameRole) {
     settings.m_name = value.toString();
   } else if (role == kTypeRole) {
     settings.m_type = value.toString();
+  } else if (role == kIntervalRole) {
+    settings.m_interval = value.toTime();
+  } else if (role == kConfigRole) {
+    settings.m_config = value.value<QFileInfo>();
+  } else if (role == kTimerRole) {
+    settings.m_timer = value.value<QElapsedTimer>();
+  } else if (role == kMetricsRole) {
+    settings.m_metrics = value.value<QHash<QString, Metric>>();
   } else {
     return false;
   }
@@ -58,6 +86,7 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> 
   beginRemoveRows(parent, row, row + count - 1);
 
   for (int i = 0; i < count; ++i) {
+    m_data.at(row + i).first->unload();
     m_data.removeAt(row + i);
   }
   endRemoveRows();

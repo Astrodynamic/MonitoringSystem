@@ -25,6 +25,7 @@ ColumnLayout {
         color: "lightgray"
 
         Text {
+          id: _name
           anchors.centerIn: parent
           renderType: Text.NativeRendering
           text: model.name
