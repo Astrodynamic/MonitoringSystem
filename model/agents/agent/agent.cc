@@ -1,6 +1,8 @@
 #include "agent.h"
 
-Agent::Agent(const AgentSettings &settings) : m_settings(settings) {}
+Agent::Agent(const AgentSettings &settings) : m_settings(settings) {
+  m_settings.m_timer.start();
+}
 
 auto Agent::Settings() -> AgentSettings & {
   return m_settings;
