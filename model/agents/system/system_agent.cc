@@ -6,6 +6,6 @@ Agent * SystemAgent::create(const AgentSettings &settings) {
   return new SystemAgent(settings);
 }
 
-const QHash<QString, Metric> & SystemAgent::getMetrics() const {
+const QHash<QString, Metric> & SystemAgent::Metrics() const {
   return m_settings.m_metrics;
 }

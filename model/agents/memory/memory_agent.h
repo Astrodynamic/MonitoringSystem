@@ -10,5 +10,5 @@ class MemoryAgent final : public Agent {
 
   static Agent * create(const AgentSettings &settings);
 
-  virtual const QHash<QString, Metric> & getMetrics() const override final;
+  virtual const QHash<QString, Metric> & Metrics() const override final;
 };

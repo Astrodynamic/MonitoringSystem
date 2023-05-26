@@ -12,16 +12,11 @@ public:
   Agent & operator=(const Agent & other) = delete;
   Agent & operator=(Agent && other) = delete;
 
-  virtual const QHash<QString, Metric> & getMetrics() const = 0;
+  virtual const QHash<QString, Metric> & Metrics() const = 0;
   
-  const AgentSettings & getSettings() const;
-  AgentSettings & getSettings();
-  void setSettings(const AgentSettings &);
+  const AgentSettings & Settings() const;
+  AgentSettings & Settings();
 
  protected:
   AgentSettings m_settings;
 };
-
-#define Agent_iid "MonitoringSystem.Agent/1.0"
-
-Q_DECLARE_INTERFACE(Agent, Agent_iid)

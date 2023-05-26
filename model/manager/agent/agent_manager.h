@@ -2,7 +2,6 @@
 
 #include <QAbstractListModel>
 #include <QtCore>
-#include <QLibrary>
 #include <QObject>
 
 #include "agent.h"

@@ -1,15 +1,10 @@
 #include "agent.h"
 
-AgentSettings & Agent::getSettings() {
+AgentSettings & Agent::Settings() {
     return m_settings;
 }
 
-void Agent::setSettings(const AgentSettings & new_settings)
-{
-    m_settings = new_settings;
-}
-
-const AgentSettings & Agent::getSettings() const {
+const AgentSettings & Agent::Settings() const {
   return m_settings;
 }
 

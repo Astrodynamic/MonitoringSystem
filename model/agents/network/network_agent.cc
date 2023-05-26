@@ -6,6 +6,6 @@ Agent * NetworkAgent::create(const AgentSettings &settings) {
   return new NetworkAgent(settings);
 }
 
-const QHash<QString, Metric> & NetworkAgent::getMetrics() const {
+const QHash<QString, Metric> & NetworkAgent::Metrics() const {
   return m_settings.m_metrics;
 }

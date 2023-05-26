@@ -14,7 +14,7 @@ int AgentManager::rowCount(const QModelIndex &parent) const {
 QVariant AgentManager::data(const QModelIndex &index, int role) const {
   if (!index.isValid()) return QVariant();
 
-  AgentSettings &settings = m_data.at(index.row())->getSettings();
+  AgentSettings &settings = m_data.at(index.row())->Settings();
 
   if (role == kNameRole) {
     return QVariant::fromValue(settings.m_name);
@@ -33,7 +33,7 @@ QHash<int, QByteArray> AgentManager::roleNames() const {
 }
 
 bool AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) {
-  AgentSettings &settings = m_data[index.row()]->getSettings();
+  AgentSettings &settings = m_data[index.row()]->Settings();
   if (role == kNameRole) {
     settings.m_name = value.toString();
   } else if (role == kTypeRole) {
@@ -68,23 +68,6 @@ bool AgentManager::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 bool AgentManager::registerAgent(const QString &path, AgentSettings &settings) {
-    QPluginLoader plugin(path);
-
-    if (!plugin.load()) {
-        qDebug() << "Плагин не загружен";
-        return false;
-    }
-
-    Agent* pluginInterface = qobject_cast<Agent *>(plugin.instance());
-    if (!pluginInterface) {
-      return false;
-    }
-
-    pluginInterface->setSettings(settings);
-    pluginInterface->getMetrics();
-  //beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-  //m_data.push_back(agent);
-  //endInsertRows();
 
     return true;
 }

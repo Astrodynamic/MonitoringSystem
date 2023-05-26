@@ -1,6 +1,5 @@
 #include "cpu_agent.h"
 
-const QHash<QString, Metric> & CpuAgent::getMetrics() const {
-    qDebug() << "get metrics test";
+const QHash<QString, Metric> & CpuAgent::Metrics() const {
   return m_settings.m_metrics;
 }
