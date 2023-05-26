@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QLibrary>
 #include <QtCore>
 #include <QObject>
 
@@ -16,6 +17,7 @@ class AgentManager : public QAbstractListModel {
   };
 
   explicit AgentManager(QObject *parent = nullptr);
+  virtual ~AgentManager();
 
   virtual auto rowCount(const QModelIndex &parent = QModelIndex()) const -> int override;
   virtual auto data(const QModelIndex &index, int role = Qt::DisplayRole) const -> QVariant override;
@@ -27,5 +29,5 @@ class AgentManager : public QAbstractListModel {
   auto registerAgent(const QString &path, AgentSettings & settings) -> bool;
 
  private:
-  QVector<Agent *> m_data;
+  QVector<QPair<QSharedPointer<QLibrary>, QSharedPointer<Agent>>> m_data;
 };

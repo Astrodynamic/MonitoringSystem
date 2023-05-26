@@ -5,6 +5,7 @@
 class Agent {
 public:
   Agent() = default;
+  explicit Agent(const AgentSettings &settings);
   explicit Agent(const Agent & other) = delete;
   explicit Agent(Agent && other) = delete;
   virtual ~Agent() = default;

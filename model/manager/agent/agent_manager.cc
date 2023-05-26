@@ -2,8 +2,9 @@
 
 #include <QtPlugin>
 
-AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-}
+AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {}
+
+AgentManager::~AgentManager() {}
 
 auto AgentManager::rowCount(const QModelIndex &parent) const -> int {
   if (parent.isValid()) return 0;
@@ -14,7 +15,7 @@ auto AgentManager::rowCount(const QModelIndex &parent) const -> int {
 auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
   if (!index.isValid()) return QVariant();
 
-  AgentSettings &settings = m_data.at(index.row())->Settings();
+  AgentSettings &settings = m_data.at(index.row()).second->Settings();
 
   if (role == kNameRole) {
     return QVariant::fromValue(settings.m_name);
@@ -33,7 +34,7 @@ auto AgentManager::roleNames() const -> QHash<int, QByteArray> {
 }
 
 auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) -> bool {
-  AgentSettings &settings = m_data[index.row()]->Settings();
+  AgentSettings &settings = m_data[index.row()].second->Settings();
   if (role == kNameRole) {
     settings.m_name = value.toString();
   } else if (role == kTypeRole) {
@@ -59,7 +60,6 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> 
   beginRemoveRows(parent, row, row + count - 1);
 
   for (int i = 0; i < count; ++i) {
-    delete m_data.at(row + i);
     m_data.removeAt(row + i);
   }
   endRemoveRows();
@@ -68,6 +68,22 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> 
 }
 
 auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -> bool {
+  QSharedPointer<QLibrary> library(new QLibrary(path));
+  if (!library->load()) {
+    qDebug() << "Failed to load library:" << library->errorString();
+    return false;
+  }
 
-    return true;
+  using fn = Agent *(*)(const AgentSettings settings);
+  fn __create = (fn)library->resolve("__create");
+  if (!__create) {
+    qDebug() << "Failed to resolve __create function";
+    return false;
+  }
+
+  beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+  m_data.push_back({library, QSharedPointer<Agent>(__create(settings))});
+  endInsertRows();
+
+  return true;
 }
