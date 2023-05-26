@@ -2,6 +2,7 @@
 
 #include <QDir>
 
+#include "log_manager.h"
 #include "agent_manager.h"
 #include "config_manager.h"
 #include "watcher_manager.h"
@@ -17,6 +18,7 @@ class Kernel : public QObject {
   auto agentManager() const -> AgentManager *;
 
  private:
+  LogManager *m_log_manager;
   AgentManager *m_agent_manager;
   WatcherManager *m_watcher_manager;
   ConfigurationManager *m_config_manager;

@@ -2,6 +2,7 @@
 
 Kernel::Kernel(QObject *parent)
     : QObject(parent),
+      m_log_manager(new LogManager(this)),
       m_agent_manager(new AgentManager(this)),
       m_watcher_manager(new WatcherManager(QString(BUILD_DIR), this)),
       m_config_manager(new ConfigurationManager(this)) {
@@ -16,6 +17,7 @@ Kernel::Kernel(QObject *parent)
 }
 
 Kernel::~Kernel() {
+  delete m_log_manager;
   delete m_agent_manager;
   delete m_watcher_manager;
   delete m_config_manager;

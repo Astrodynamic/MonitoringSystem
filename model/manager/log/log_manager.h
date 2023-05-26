@@ -1,8 +1,15 @@
 #pragma once
 
-class LogManager {
+#include <QObject>
+
+class LogManager : public QObject {
+  Q_OBJECT
+
  public:
-  void createLogFile(const std::string& fileName);
-  void writeMetricsToLog(const std::string& metrics);
-  std::vector<std::string> getLastLogLines(int lineCount);
+  explicit LogManager(QObject *parent = nullptr);
+  ~LogManager();
+
+
+  private:
+
 };
