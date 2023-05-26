@@ -1,7 +1,5 @@
 #include "agent_manager.h"
 
-#include <QtPlugin>
-
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {}
 
 AgentManager::~AgentManager() {}

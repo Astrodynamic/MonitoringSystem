@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.15)
 
 project(memory_agent VERSION 1.0.0 LANGUAGES CXX)
 
-find_package(Qt6 6.2 COMPONENTS Core REQUIRED)
+find_package(Qt6 6.2
+  COMPONENTS
+  Core
+  REQUIRED
+)
 
 set(HEADERS
   memory_agent.h
@@ -31,8 +35,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 set_target_properties(${PROJECT_NAME} PROPERTIES
     PREFIX ""
     SUFFIX .so
-    CXX_VISIBILITY_PRESET hidden
-    VISIBILITY_INLINES_HIDDEN 1
     LIBRARY_OUTPUT_DIRECTORY ${LBD_TARGET}/agents/${PROJECT_NAME}
 )
 
