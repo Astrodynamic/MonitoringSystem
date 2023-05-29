@@ -5,6 +5,7 @@ project(MonitoringSystem VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS
+    Gui
     Core
     Quick
     QuickControls2
@@ -107,6 +108,7 @@ target_compile_definitions(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+    Qt6::Gui
     Qt6::Core
     Qt6::Quick
     Qt6::QuickControls2
