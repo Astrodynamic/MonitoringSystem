@@ -8,3 +8,8 @@ LogManager::LogManager(QObject *parent) : QObject(parent) {
 }
 
 LogManager::~LogManager() {}
+
+auto LogManager::Write(const QString &message) -> void {
+  m_stream << message << "\n";
+  m_file.flush();
+}

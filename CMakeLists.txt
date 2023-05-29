@@ -136,6 +136,12 @@ add_custom_command(
     ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/agents
 )
 
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD COMMAND
+    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/logs
+)
+
 # Add cppcheck
 find_program(CPPCHECK cppcheck)
 
