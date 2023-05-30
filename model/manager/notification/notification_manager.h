@@ -1,14 +1,21 @@
 #pragma once
 
-class NotificationManager {
- public:
-  void sendTelegramNotification(const std::string& message) {
-    // Отправка уведомления в Telegram
-  }
+#include <QObject>
+#include <QDebug>
+#include <curl/curl.h>
+#include <string>
 
-  void sendEmailNotification(const std::string& recipient,
-                             const std::string& subject,
-                             const std::string& message) {
-    // Отправка уведомления на электронную почту
-  }
+class NotificationManager : public QObject {
+  Q_OBJECT
+
+ public:
+  explicit NotificationManager(QObject *parent = nullptr);
+  virtual ~NotificationManager();
+
+  auto sendTellegramNotification(const std::string msg) -> bool;
+  auto sendEmailNotification(const std::string msg) -> bool;
+
+ private:
+  std::string m_token;
+  std::string m_chat;
 };

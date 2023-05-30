@@ -6,6 +6,7 @@
 #include "agent_manager.h"
 #include "config_manager.h"
 #include "watcher_manager.h"
+#include "notification_manager.h"
 
 class Kernel : public QObject {
   Q_OBJECT
@@ -22,4 +23,5 @@ class Kernel : public QObject {
   AgentManager *m_agent_manager;
   WatcherManager *m_watcher_manager;
   ConfigurationManager *m_config_manager;
+  NotificationManager *m_notification_manager;
 };

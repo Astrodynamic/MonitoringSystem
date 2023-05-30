@@ -5,7 +5,8 @@ Kernel::Kernel(QObject *parent)
       m_log_manager(new LogManager(QString(BUILD_DIR) + QDir::separator() + "logs", this)),
       m_agent_manager(new AgentManager(this)),
       m_watcher_manager(new WatcherManager(QString(BUILD_DIR), this)),
-      m_config_manager(new ConfigurationManager(this)) {
+      m_config_manager(new ConfigurationManager(this)),
+      m_notification_manager(new NotificationManager(this)) {
 
   m_log_manager->BufferSize(20);
 
@@ -23,6 +24,7 @@ Kernel::~Kernel() {
   delete m_agent_manager;
   delete m_watcher_manager;
   delete m_config_manager;
+  delete m_notification_manager;
 }
 
 auto Kernel::agentManager() const -> AgentManager * {

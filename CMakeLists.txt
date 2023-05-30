@@ -4,6 +4,8 @@ project(MonitoringSystem VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 
+find_package(CURL REQUIRED)
+
 find_package(Qt6 6.2 REQUIRED COMPONENTS
     Gui
     Core
@@ -18,6 +20,8 @@ if(APPLE)
 endif()
 
 include_directories(
+    ${CURL_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/notification
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/watcher
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/config
     ${CMAKE_CURRENT_SOURCE_DIR}/model/settings/agent
@@ -28,6 +32,7 @@ include_directories(
 )
 
 set(HEADERS
+    model/manager/notification/notification_manager.h
     model/manager/watcher/watcher_manager.h
     model/manager/config/config_manager.h
     model/settings/agent/agent_settings.h
@@ -38,6 +43,7 @@ set(HEADERS
 )
 
 set(SOURCES
+    model/manager/notification/notification_manager.cc
     model/manager/watcher/watcher_manager.cc
     model/manager/config/config_manager.cc
     model/settings/agent/agent_settings.cc
@@ -108,6 +114,7 @@ target_compile_definitions(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+    ${CURL_LIBRARIES}
     Qt6::Gui
     Qt6::Core
     Qt6::Quick
