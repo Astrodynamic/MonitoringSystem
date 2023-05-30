@@ -15,27 +15,28 @@ auto LogManager::BufferSize(qsizetype size) -> void {
 
 auto LogManager::Write(const QString &message, LogLevel level) -> void {
   static const QHash<LogLevel, QString> map {
-    { LogLevel::kDEBUG, "DEBUG:" },
-    { LogLevel::kINFO, "INFO:" },
-    { LogLevel::kWARNING, "WARNING:" },
-    { LogLevel::kERROR, "ERROR:" }
+    { LogLevel::kDEBUG, "DEBUG" },
+    { LogLevel::kINFO, "INFO" },
+    { LogLevel::kWARNING, "WARNING" },
+    { LogLevel::kERROR, "ERROR" }
   };
 
-  static const int field_width = 10;
+  static const int field_width = 8;
 
   QString lvl = QString("%1").arg(map.value(level), field_width);
 
   QDateTime now = QDateTime::currentDateTime();
   QString time = now.toString("yy-MM-dd HH:mm:ss");
 
-  m_buffer.enqueue(lvl + time + message);
+  m_buffer.enqueue(lvl + '|' + time  + '|' + message);
 
   Flush(m_buffer_size);
 }
 
 auto LogManager::Read() const -> QStringList {
   QStringList entries;
-  for (int i = 0; i <= m_buffer_size; ++i) {
+  int entries_count = qMin(m_buffer.size(), static_cast<int>(m_buffer_size));
+  for (int i = 0; i < entries_count; ++i) {
     entries.append(m_buffer.at(i));
   }
 
@@ -51,8 +52,8 @@ auto LogManager::Flush(qsizetype leave) -> void {
       m_stream.setEncoding(QStringConverter::Utf8);
       while (m_buffer.size() > leave) {
         m_stream << m_buffer.dequeue() << '\n';
-        m_stream.flush();
       }
+      m_stream.flush();
     }
     file.close();
   }
