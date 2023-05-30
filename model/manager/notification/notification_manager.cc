@@ -31,8 +31,17 @@ auto NotificationManager::sendEmailNotification(const std::string& subject, cons
     return false;
   }
 
-  curl_easy_setopt(curl, CURLOPT_URL, "smtp://smtp.example.com");
+  // Установите URL-адрес SMTP-сервера и порт
+  curl_easy_setopt(curl, CURLOPT_URL, "smtp://smtp.example.com:587");
+
+  // Установите имя пользователя и пароль для авторизации на SMTP-сервере
+  curl_easy_setopt(curl, CURLOPT_USERNAME, "username");
+  curl_easy_setopt(curl, CURLOPT_PASSWORD, "password");
+
+  // Установите адрес отправителя
   curl_easy_setopt(curl, CURLOPT_MAIL_FROM, m_from.c_str());
+
+  // Добавьте адрес получателя
   struct curl_slist* recipients = curl_slist_append(nullptr, m_to.c_str());
   curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
