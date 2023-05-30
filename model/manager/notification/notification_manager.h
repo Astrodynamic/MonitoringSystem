@@ -18,4 +18,5 @@ class NotificationManager : public QObject {
  private:
   std::string m_token;
   std::string m_chat;
+  std::string sender;
 };

@@ -25,7 +25,7 @@ auto NotificationManager::sendTellegramNotification(const std::string msg)
   return success;
 }
 
-auto NotificationManager::sendEmailNotification(const std::string& message) -> bool {
+auto NotificationManager::sendEmailNotification(const std::string message) -> bool {
   CURL* curl = curl_easy_init();
   if (!curl) {
     return false;
