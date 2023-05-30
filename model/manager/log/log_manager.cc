@@ -2,9 +2,8 @@
 
 LogManager::LogManager(QString path, QObject *parent)
   : QObject(parent)
-  , m_timer(this) 
   , m_path(path)
-  , m_max_size(100) {}
+  , m_buffer_size(100) {}
 
 LogManager::~LogManager() {
   Flush();
@@ -25,7 +24,11 @@ auto LogManager::Write(const QString &message, LogLevel level) -> void {
   static const int field_width = 10;
 
   QString lvl = QString("%1").arg(map.value(level), field_width);
-  m_buffer.enqueue(lvl + message);
+
+  QDateTime now = QDateTime::currentDateTime();
+  QString time = now.toString("yy-MM-dd HH:mm:ss");
+
+  m_buffer.enqueue(lvl + time + message);
 
   Flush(m_buffer_size);
 }
@@ -41,6 +44,7 @@ auto LogManager::Read() const -> QStringList {
 
 auto LogManager::Flush(qsizetype leave) -> void {
   if (m_buffer.size() > leave) {
+    QDateTime now = QDateTime::currentDateTime();
     QFile file(m_path + QDir::separator() + QString("log_%1.txt").arg(now.toString("yyyy-MM-dd")));
     if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
       QTextStream m_stream(&file);
