@@ -13,12 +13,6 @@ find_package(Qt6 6.2 REQUIRED COMPONENTS
     QuickControls2
 )
 
-if(APPLE)
-    set(MACOSX_BUNDLE_ICON_FILE appicon.png)
-    set(app_icon "${CMAKE_CURRENT_SOURCE_DIR}/data/icon/appicon.png")
-    set_source_files_properties(${app_icon} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-endif()
-
 include_directories(
     ${CURL_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/notification
@@ -61,11 +55,17 @@ set(PROJECT_RESOURCES
 
 qt_add_executable(${PROJECT_NAME}
     ${PROJECT_RESOURCES}
-    ${app_icon}
 )
 
 add_definitions(
     -DBUILD_DIR="${CMAKE_BINARY_DIR}"
+)
+
+qt_add_resources(${PROJECT_NAME} "icon"
+    PREFIX "/"
+    BASE data/icon
+    FILES
+    data/icon/appicon.png
 )
 
 qt_add_resources(${PROJECT_NAME} "qml"

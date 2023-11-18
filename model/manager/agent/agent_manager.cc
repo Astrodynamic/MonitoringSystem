@@ -86,8 +86,8 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> 
   beginRemoveRows(parent, row, row + count - 1);
 
   for (int i = 0; i < count; ++i) {
-    m_data.at(row + i).first->unload();
-    m_data.removeAt(row + i);
+    m_data.at(row).first->unload();
+    m_data.removeAt(row);
   }
   endRemoveRows();
 

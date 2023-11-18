@@ -1,11 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QIcon>
 
 #include "kernel.h"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
+  QGuiApplication::setWindowIcon(QIcon(":/appicon.png"));
 
   Kernel kernel;
 
