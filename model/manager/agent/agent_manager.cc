@@ -28,7 +28,7 @@ auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
   } else if (role == kConfigRole) {
     return QVariant::fromValue(settings.m_config);
   } else if (role == kTimerRole) {
-    return QVariant::fromValue(settings.m_timer);
+    return QVariant::fromValue(QTime(0, 0).addMSecs(settings.m_timer.elapsed()));
   } else if (role == kMetricsRole) {
     return QVariant::fromValue(settings.m_metrics);
   }
