@@ -17,6 +17,8 @@ ApplicationWindow {
     id: _view
     anchors.fill: parent
 
+    currentIndex: 1
+
     Agents {
       id: _agents
     }
