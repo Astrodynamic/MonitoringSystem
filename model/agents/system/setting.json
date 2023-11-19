@@ -5,38 +5,38 @@
   "metrics": [
     {
       "name": "cpu_idle_usage",
-      "comparison": "<=",
-      "critical_value": 20
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "cpu_user_usage",
-      "comparison": ">=",
-      "critical_value": 80
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "cpu_privileged_usage",
-      "comparison": ">=",
-      "critical_value": 10
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "cpu_dpc_usage",
-      "comparison": ">=",
-      "critical_value": 5
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "cpu_interrupt_usage",
-      "comparison": ">=",
-      "critical_value": 1
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "total_swap",
-      "comparison": ">=",
-      "critical_value": 1024
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "used_swap",
-      "comparison": ">=",
-      "critical_value": 512
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "proc_queue_length",
