@@ -35,4 +35,5 @@ class AgentManager : public QAbstractListModel {
 
  private:
   QVector<QPair<QSharedPointer<QLibrary>, QSharedPointer<Agent>>> m_data;
+  QTimer m_timer;
 };
