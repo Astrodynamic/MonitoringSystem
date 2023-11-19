@@ -6,12 +6,12 @@
     {
       "name": "cpu",
       "comparison": ">=",
-      "critical_value": 80
+      "critical_value": 90
     },
     {
       "name": "processes",
       "comparison": ">=",
-      "critical_value": 1000
+      "critical_value": 1500
     }
   ],
   "interval": 10
