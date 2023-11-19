@@ -3,13 +3,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <stdio.h>
 #include <string.h>
 #include <sys/statvfs.h>
 #include <sys/sysinfo.h>
-Agent *__create(const AgentSettings settings) {
-  return new MemoryAgent(settings);
-}
 
 // returns in Gb
 static double GetRAMTotal() {
@@ -59,6 +57,11 @@ static void GetHardIO(int *hard_ops, double *hard_throughput) {
     pclose(iostat);
   }
 }
+
+Agent *__create(const AgentSettings settings) {
+  return new MemoryAgent(settings);
+}
+
 #ifdef __cplusplus
 }
 #endif

@@ -3,18 +3,18 @@
 #include "agent_settings.h"
 
 class Agent {
-public:
+ public:
   Agent() = default;
   explicit Agent(const AgentSettings &settings);
-  explicit Agent(const Agent & other) = delete;
-  explicit Agent(Agent && other) = delete;
+  explicit Agent(const Agent &other) = delete;
+  explicit Agent(Agent &&other) = delete;
   virtual ~Agent() = default;
 
-  auto operator=(const Agent & other) -> Agent & = delete;
-  auto operator=(Agent && other) -> Agent & = delete;
+  auto operator=(const Agent &other) -> Agent & = delete;
+  auto operator=(Agent &&other) -> Agent & = delete;
 
   virtual auto Metrics() -> const QHash<QString, Metric> & = 0;
-  
+
   auto Settings() const -> const AgentSettings &;
   auto Settings() -> AgentSettings &;
 
