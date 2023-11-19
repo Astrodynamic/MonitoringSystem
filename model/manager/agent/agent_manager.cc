@@ -1,6 +1,15 @@
 #include "agent_manager.h"
 
-AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {}
+AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
+    m_timer.start(1000);
+
+    connect(&m_timer, &QTimer::timeout, [this]() {
+        for (qsizetype idx{}; idx < m_data.size(); ++idx) {
+            auto index = createIndex(idx, 0);
+            emit dataChanged(index, index, QVector<int>() << kTimerRole);
+        }
+    });
+}
 
 AgentManager::~AgentManager() {
   removeRows(0, m_data.size());

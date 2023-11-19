@@ -59,7 +59,6 @@ Frame {
         }
 
         delegate: Frame {
-
           width: ListView.view.width
 
           background: Rectangle {
