@@ -125,6 +125,10 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
 }
 
 auto AgentManager::config(int index) -> QString {
+    if (index < 0 || index > m_data.size()) {
+        return "";
+    }
+
     QString path = m_data[index].second->Settings().m_config.absoluteFilePath();
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -134,15 +138,17 @@ auto AgentManager::config(int index) -> QString {
 }
 
 auto AgentManager::config(int index, QString json) -> void {
-    auto &settings = m_data[index].second->Settings();
-    QString path = settings.m_config.absoluteFilePath();
-    QFile file(path);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream out(&file);
-        out << json;
-    }
-    file.close();
+    if (index >= 0 && index < m_data.size()) {
+        auto &settings = m_data[index].second->Settings();
+        QString path = settings.m_config.absoluteFilePath();
+        QFile file(path);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << json;
+        }
+        file.close();
 
-    emit updateConfiguration(path, settings);
-    emit dataChanged(createIndex(index, 0), createIndex(index, 0));
+        emit updateConfiguration(path, settings);
+        emit dataChanged(createIndex(index, 0), createIndex(index, 0));
+    }
 }
