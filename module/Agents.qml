@@ -63,7 +63,7 @@ Frame {
 
           background: Rectangle {
             anchors.fill: parent
-            color: "white"
+            color: _view.currentIndex === index ? "lightblue" : "white"
             border {
               width: 1
               color: "grey"
@@ -73,6 +73,14 @@ Frame {
 
           ColumnLayout {
             width: parent.width
+
+            MouseArea {
+              anchors.fill: parent
+              onClicked: {
+                _view.currentIndex = index
+                _json.text = Kernel.agentManager.config(index)
+              }
+            }
 
             Text {
               text: "Name: " + model.name
@@ -128,10 +136,29 @@ Frame {
       }
 
       TextArea {
+        id: _json
         wrapMode: TextEdit.NoWrap
         font.pointSize: 16
         padding: 5
+
+        Component.onCompleted: {
+          text = Kernel.agentManager.config(_view.currentIndex)
+        }
       }
+    }
+  }
+
+  Button {
+    anchors {
+      right: parent.right
+      rightMargin: 10
+      bottom: parent.bottom
+      bottomMargin: 20
+    }
+
+    text: "Save"
+    onClicked: {
+      Kernel.agentManager.config(_view.currentIndex, _json.text)
     }
   }
 }

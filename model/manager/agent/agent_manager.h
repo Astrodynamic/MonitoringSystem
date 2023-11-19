@@ -33,6 +33,13 @@ class AgentManager : public QAbstractListModel {
 
   auto registerAgent(const QString &path, AgentSettings & settings) -> bool;
 
+ public slots:
+  auto config(int index) -> QString;
+  auto config(int index, QString json) -> void;
+
+ signals:
+  auto updateConfiguration(const QString & path, AgentSettings &settings) -> void;
+
  private:
   QVector<QPair<QSharedPointer<QLibrary>, QSharedPointer<Agent>>> m_data;
   QTimer m_timer;

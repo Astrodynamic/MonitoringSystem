@@ -26,6 +26,7 @@ auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings 
   settings.m_type = root.value("type").toString();
 
   settings.m_interval = QTime(0, 0).addSecs(root.value("interval").toInt());
+  settings.m_config.setFile(path);
 
   QJsonArray metrics = root.value("metrics").toArray();
 
@@ -39,7 +40,7 @@ auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings 
 
   for (const QJsonValue &metric : metrics) {
     const QJsonObject metricObject = metric.toObject();
-    settings.m_metrics[metricObject.value("name").toString()] =
+      settings.m_metrics[metricObject.value("name").toString()] =
         Metric{metricObject.value("value").toVariant(),
                op[metricObject.value("comparison").toString()],
                metricObject.value("critical_value").toVariant()};

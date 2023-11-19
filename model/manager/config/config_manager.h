@@ -15,5 +15,6 @@ class ConfigurationManager : public QObject {
   explicit ConfigurationManager(QObject *parent = nullptr);
   virtual ~ConfigurationManager();
 
+ public slots:
   auto loadConfiguration(const QString & path, AgentSettings &settings) -> bool;
 };
