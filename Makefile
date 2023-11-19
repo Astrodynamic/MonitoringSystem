@@ -31,7 +31,7 @@ $(foreach agent, cpu memory network system, $(eval $(call AGENT_TARGET,$(agent))
 
 # Agent build target pattern
 %_agent:
-	cmake -S ./model/agents/$*/ -B ./model/agents/$*/build -DLBD_TARGET=${CURDIR}/build
+	cmake -DCMAKE_PREFIX_PATH:PATH=/home/astrodynamic/Qt/6.2.4/gcc_64 -S ./model/agents/$*/ -B ./model/agents/$*/build -DLBD_TARGET=${CURDIR}/build
 	cmake --build ./model/agents/$*/build -j$(nproc)
 
 # Test target

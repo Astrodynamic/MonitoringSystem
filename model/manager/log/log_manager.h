@@ -22,9 +22,10 @@ class LogManager : public QObject {
   virtual ~LogManager();
 
   auto BufferSize(qsizetype size) -> void;
-
-  auto Write(const QString& message, LogLevel level = LogLevel::kDEBUG) -> void;
   auto Read() const -> QStringList;
+
+ public slots:
+  auto Write(const QString& message, LogLevel level = LogLevel::kDEBUG) -> void;
 
  private:
   QString m_path;

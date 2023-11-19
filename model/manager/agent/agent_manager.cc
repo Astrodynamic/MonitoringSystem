@@ -6,7 +6,12 @@ AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
     connect(&m_timer, &QTimer::timeout, [this]() {
         for (qsizetype idx{}; idx < m_data.size(); ++idx) {
             auto index = createIndex(idx, 0);
-            emit dataChanged(index, index, QVector<int>() << kTimerRole);
+            auto &setting = m_data[idx].second->Settings();
+            if (setting.m_enabled) {
+                emit dataChanged(index, index, QVector<int>() << kTimerRole);
+            } else {
+                setting.m_timer.start();
+            }
         }
     });
 }
@@ -67,7 +72,7 @@ auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int 
   } else if (role == kTypeRole) {
     settings.m_type = value.toString();
   } else if (role == kIntervalRole) {
-    settings.m_interval = value.toTime();
+    settings.m_interval->start(value.toInt());
   } else if (role == kConfigRole) {
     settings.m_config = value.value<QFileInfo>();
   } else if (role == kTimerRole) {

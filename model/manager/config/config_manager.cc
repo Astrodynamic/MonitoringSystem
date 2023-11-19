@@ -25,7 +25,9 @@ auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings 
   settings.m_name = root.value("name").toString();
   settings.m_type = root.value("type").toString();
 
-  settings.m_interval = QTime(0, 0).addSecs(root.value("interval").toInt());
+  settings.m_interval = QSharedPointer<QTimer>::create();
+  settings.m_interval->start(root.value("interval").toInt() * 1e+3);
+
   settings.m_config.setFile(path);
 
   QJsonArray metrics = root.value("metrics").toArray();
