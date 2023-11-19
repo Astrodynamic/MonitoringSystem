@@ -5,13 +5,13 @@
     "metrics": [
         {
             "name": "ram_total",
-            "comparison": ">=",
-            "critical_value": 8
+            "comparison": "<",
+            "critical_value": 0
         },
         {
             "name": "ram",
             "comparison": ">=",
-            "critical_value": 80
+            "critical_value": 90
         },
         {
             "name": "hard_volume",
@@ -20,13 +20,13 @@
         },
         {
             "name": "hard_ops",
-            "comparison": ">=",
-            "critical_value": 100
+            "comparison": "<",
+            "critical_value": 0
         },
         {
             "name": "hard_throughput",
-            "comparison": "<=",
-            "critical_value": 1000
+            "comparison": "<",
+            "critical_value": 0
         }
     ],
     "interval": 30
