@@ -1,6 +1,8 @@
 #include "cpu_agent.h"
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 #include <stdlib.h>
 #include <sys/sysinfo.h>
   Agent* __create(const AgentSettings settings) { return new CpuAgent(settings); }
@@ -19,8 +21,9 @@ extern "C" {
     }
     return 0;
   }
-
+#ifdef __cplusplus
 }
+#endif
 
 CpuAgent::CpuAgent(const AgentSettings &settings) : Agent(settings) {}
 

@@ -8,5 +8,5 @@ class SystemAgent final : public Agent {
   explicit SystemAgent(const AgentSettings &settings);
   ~SystemAgent() = default;
 
-  virtual auto Metrics() const -> const QHash<QString, Metric> & override final;
+  virtual auto Metrics() -> const QHash<QString, Metric> & override final;
 };

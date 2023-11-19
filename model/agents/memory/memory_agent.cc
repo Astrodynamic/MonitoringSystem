@@ -1,6 +1,8 @@
 #include "memory_agent.h"
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <sys/statvfs.h>
@@ -57,7 +59,9 @@ static void GetHardIO(int *hard_ops, double *hard_throughput) {
     pclose(iostat);
   }
 }
+#ifdef __cplusplus
 }
+#endif
 
 MemoryAgent::MemoryAgent(const AgentSettings &settings) : Agent(settings) {}
 
