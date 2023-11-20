@@ -42,6 +42,102 @@ static void GetSWAPInfo(double *total, double *used) {
   }
 }
 
+static int GetRunningProccessesCount() {
+  FILE *running_proccesses;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  running_proccesses = popen("ps -e -o stat | grep \"^R\" | wc -l", "r");
+  if (NULL != running_proccesses) {
+    fgets(buffer, 128, running_proccesses);
+
+    int count;
+    sscanf(buffer, "%d", &count);
+    pclose(running_proccesses);
+
+    return count;
+  }
+
+  return 0;
+}
+
+static int GetInodesCount() {
+  FILE *inodes;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  inodes = popen("df -i / | awk 'NR>1 {print $2}'", "r");
+  if (NULL != inodes) {
+    fgets(buffer, 128, inodes);
+
+    int count;
+    sscanf(buffer, "%d", &count);
+    pclose(inodes);
+
+    return count;
+  }
+
+  return 0;
+}
+
+// returns in MiB
+static double GetHardReadTime() {
+  FILE *ioping;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  ioping = popen("ioping -R /tmp/ | grep read | awk '{print $8}'", "r");
+  if (NULL != ioping) {
+    fgets(buffer, 128, ioping);
+
+    double speed;
+    sscanf(buffer, "%lf", &speed);
+    pclose(ioping);
+
+    return speed;
+  }
+
+  return 0;
+}
+
+static int GetSystemErrors() {
+  FILE *syslog;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  syslog = popen("grep error /var/log/syslog | wc -l", "r");
+  if (NULL != syslog) {
+    fgets(buffer, 128, syslog);
+
+    int count;
+    sscanf(buffer, "%d", &count);
+    pclose(syslog);
+
+    return count;
+  }
+
+  return 0;
+}
+
+static int GetUserAuths() {
+  FILE *syslog;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  syslog = popen("grep \"session opened\" /var/log/auth.log | wc -l", "r");
+  if (NULL != syslog) {
+    fgets(buffer, 128, syslog);
+
+    int count;
+    sscanf(buffer, "%d", &count);
+    pclose(syslog);
+
+    return count;
+  }
+
+  return 0;
+}
+
 Agent *__create(const AgentSettings settings) {
   return new SystemAgent(settings);
 }
@@ -66,6 +162,14 @@ auto SystemAgent::Metrics() -> const QHash<QString, Metric> & {
   GetSWAPInfo(&swap_total, &swap_used);
   m_settings.m_metrics["total_swap"].value = swap_total;
   m_settings.m_metrics["used_swap"].value = swap_used;
+
+  m_settings.m_metrics["proc_queue_length"].value = GetRunningProccessesCount();
+
+  m_settings.m_metrics["inodes"].value = GetInodesCount();
+
+  m_settings.m_metrics["hard_read_time"].value = GetHardReadTime();
+
+  m_settings.m_metrics["system_errors"].value = GetSystemErrors();
 
   return m_settings.m_metrics;
 }

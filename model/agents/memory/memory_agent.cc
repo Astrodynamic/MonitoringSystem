@@ -49,10 +49,12 @@ static void GetHardIO(int *hard_ops, double *hard_throughput) {
       "{printf \"%.0f %f\", hard_ops, hard_throughput}'",
       "r");
   if (NULL != iostat) {
+    fgets(buffer, 128, iostat);
     char *dot = NULL;
     if (NULL != (dot = strchr(buffer, ','))) {
       *dot = '.';
     }
+
     sscanf(buffer, "%d %lf", hard_ops, hard_throughput);
     pclose(iostat);
   }

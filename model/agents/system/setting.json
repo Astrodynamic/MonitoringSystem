@@ -44,34 +44,24 @@
       "critical_value": 10
     },
     {
-      "name": "virtual_mem_volume",
-      "comparison": ">=",
-      "critical_value": 1024
-    },
-    {
-      "name": "virtual_mem_free",
-      "comparison": ">=",
-      "critical_value": 256
-    },
-    {
       "name": "inodes",
-      "comparison": ">=",
-      "critical_value": 1000
+      "comparison": "<",
+      "critical_value": 0
     },
     {
       "name": "hard_read_time",
       "comparison": "<=",
-      "critical_value": 10
+      "critical_value": 50
     },
     {
       "name": "system_errors",
       "comparison": ">=",
-      "critical_value": 10
+      "critical_value": 1000
     },
     {
       "name": "user_auths",
       "comparison": ">=",
-      "critical_value": 100
+      "critical_value": 1000
     }
   ],
   "interval": 60
