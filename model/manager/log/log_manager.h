@@ -14,6 +14,7 @@
 
 class LogManager : public QObject {
   Q_OBJECT
+  Q_PROPERTY(QStringList logs READ Read NOTIFY logsChanged FINAL)
 
  public:
   enum class LogLevel { kDEBUG = 0, kINFO, kWARNING, kERROR };
@@ -26,6 +27,9 @@ class LogManager : public QObject {
 
  public slots:
   auto Write(const QString& message, LogLevel level = LogLevel::kDEBUG) -> void;
+
+ signals:
+    void logsChanged();
 
  private:
   QString m_path;
