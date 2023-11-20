@@ -13,7 +13,7 @@ Frame {
     clip: true
     spacing: 5
 
-    model: 20
+    model: Kernel.logManager.logs
 
     header: Label {
       padding: 20
@@ -26,7 +26,7 @@ Frame {
       width: ListView.view.width
       padding: 5
 
-      text: "Logs"
+      text: modelData
       font.pointSize: 16
 
       background: Rectangle {

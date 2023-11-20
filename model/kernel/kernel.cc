@@ -30,5 +30,9 @@ Kernel::~Kernel() {
 }
 
 auto Kernel::agentManager() const -> AgentManager * {
-  return m_agent_manager;
+    return m_agent_manager;
+}
+
+auto Kernel::logManager() const -> LogManager * {
+    return m_log_manager;
 }
