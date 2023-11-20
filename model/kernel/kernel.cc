@@ -19,6 +19,7 @@ Kernel::Kernel(QObject *parent)
   m_watcher_manager->setRoot(QString(BUILD_DIR) + QDir::separator() + "agents");
 
   connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager, &ConfigurationManager::loadConfiguration);
+  connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager, &LogManager::Write);
 }
 
 Kernel::~Kernel() {

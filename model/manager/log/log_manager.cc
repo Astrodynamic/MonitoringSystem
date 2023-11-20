@@ -38,7 +38,7 @@ auto LogManager::Read() const -> QStringList {
   QStringList entries;
   int entries_count = qMin(m_buffer.size(), static_cast<int>(m_buffer_size));
   for (int i = 0; i < entries_count; ++i) {
-    entries.append(m_buffer.at(i));
+    entries.prepend(m_buffer.at(i));
   }
 
   return entries;

@@ -123,7 +123,17 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
   }
 
   beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-  m_data.push_back({library, QSharedPointer<Agent>(__create(settings))});
+  auto agent = QSharedPointer<Agent>(__create(settings));
+  connect(agent->Settings().m_interval.data(), &QTimer::timeout, [this, index = m_data.size()]() {
+      const auto& metrics = m_data[index].second->Metrics();
+      for (auto it = metrics.begin(); it != metrics.end(); ++it) {
+          QString name = it.key().rightJustified(40, ' ');
+          QString value = QString(": %1 |").arg(it.value().value.toString().leftJustified(40, ' '));
+          emit updateLogs(name + value, LogManager::LogLevel::kINFO);
+      }
+  });
+
+  m_data.push_back({library, agent});
   endInsertRows();
 
   return true;
