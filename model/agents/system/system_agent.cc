@@ -19,10 +19,10 @@ static void GetCPULevels(double *idle, double *user, double *priveleged,
       "r");
   if (NULL != cpustat) {
     fgets(buffer, 128, cpustat);
+    pclose(cpustat);
 
     sscanf(buffer, "%lf %lf %lf %lf %lf", idle, user, priveleged, dpc,
            interrupt);
-    pclose(cpustat);
 
     double sum = *idle + *user + *priveleged + *dpc + *interrupt;
     *idle = *idle / sum * 100.;
@@ -50,10 +50,10 @@ static int GetRunningProccessesCount() {
   running_proccesses = popen("ps -e -o stat | grep \"^R\" | wc -l", "r");
   if (NULL != running_proccesses) {
     fgets(buffer, 128, running_proccesses);
+    pclose(running_proccesses);
 
     int count;
     sscanf(buffer, "%d", &count);
-    pclose(running_proccesses);
 
     return count;
   }
@@ -69,10 +69,10 @@ static int GetInodesCount() {
   inodes = popen("df -i / | awk 'NR>1 {print $2}'", "r");
   if (NULL != inodes) {
     fgets(buffer, 128, inodes);
+    pclose(inodes);
 
     int count;
     sscanf(buffer, "%d", &count);
-    pclose(inodes);
 
     return count;
   }
@@ -89,10 +89,10 @@ static double GetHardReadTime() {
   ioping = popen("ioping -R /tmp/ | grep read | awk '{print $8}'", "r");
   if (NULL != ioping) {
     fgets(buffer, 128, ioping);
+    pclose(ioping);
 
     double speed;
     sscanf(buffer, "%lf", &speed);
-    pclose(ioping);
 
     return speed;
   }
@@ -108,10 +108,10 @@ static int GetSystemErrors() {
   syslog = popen("grep error /var/log/syslog | wc -l", "r");
   if (NULL != syslog) {
     fgets(buffer, 128, syslog);
+    pclose(syslog);
 
     int count;
     sscanf(buffer, "%d", &count);
-    pclose(syslog);
 
     return count;
   }
@@ -127,10 +127,10 @@ static int GetUserAuths() {
   syslog = popen("grep \"session opened\" /var/log/auth.log | wc -l", "r");
   if (NULL != syslog) {
     fgets(buffer, 128, syslog);
+    pclose(syslog);
 
     int count;
     sscanf(buffer, "%d", &count);
-    pclose(syslog);
 
     return count;
   }
