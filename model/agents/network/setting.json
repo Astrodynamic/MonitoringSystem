@@ -4,9 +4,9 @@
   "type": "Network",
   "metrics": [
     {
-      "name": "",
+      "name": "network_availability",
       "comparison": "==",
-      "critical_value": "1"
+      "critical_value": "0"
     },
     {
       "name": "inet_throughput",
