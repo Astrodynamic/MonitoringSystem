@@ -1,33 +1,33 @@
 {
-    "enabled": true,
-    "name": "Memory Monitor Agent",
-    "type": "Memory",
-    "metrics": [
-        {
-            "name": "ram_total",
-            "comparison": "<",
-            "critical_value": 0
-        },
-        {
-            "name": "ram",
-            "comparison": ">=",
-            "critical_value": 90
-        },
-        {
-            "name": "hard_volume",
-            "comparison": ">=",
-            "critical_value": 80
-        },
-        {
-            "name": "hard_ops",
-            "comparison": "<",
-            "critical_value": 0
-        },
-        {
-            "name": "hard_throughput",
-            "comparison": "<",
-            "critical_value": 0
-        }
-    ],
-    "interval": 30
+  "enabled": true,
+  "name": "Memory Monitor Agent",
+  "type": "Memory",
+  "metrics": [
+    {
+      "name": "ram_total",
+      "comparison": "<",
+      "critical_value": 0
+    },
+    {
+      "name": "ram",
+      "comparison": ">=",
+      "critical_value": 90
+    },
+    {
+      "name": "hard_volume",
+      "comparison": ">=",
+      "critical_value": 80
+    },
+    {
+      "name": "hard_ops",
+      "comparison": "<",
+      "critical_value": 0
+    },
+    {
+      "name": "hard_throughput",
+      "comparison": "<",
+      "critical_value": 0
+    }
+  ],
+  "interval": 30
 }
