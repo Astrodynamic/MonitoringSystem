@@ -6,6 +6,7 @@
 #include <QObject>
 
 #include "agent.h"
+#include "log_manager.h"
 
 class AgentManager : public QAbstractListModel {
   Q_OBJECT
@@ -39,6 +40,7 @@ class AgentManager : public QAbstractListModel {
 
  signals:
   auto updateConfiguration(const QString & path, AgentSettings &settings) -> void;
+  auto updateLogs(const QString& message, LogManager::LogLevel level = LogManager::LogLevel::kDEBUG) -> void;
 
  private:
   QVector<QPair<QSharedPointer<QLibrary>, QSharedPointer<Agent>>> m_data;
