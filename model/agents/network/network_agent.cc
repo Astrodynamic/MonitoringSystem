@@ -21,6 +21,24 @@ static int GetNetworkAvailabiliry() {
   return (strlen(buffer) == 0) ? 0 : 1;
 }
 
+static int GetInetThroughput() {
+  FILE* speed;
+  char buffer[128];
+  memset(&buffer, 0, 128);
+
+  speed = popen("cat /sys/class/net/enp5s0/speed", "r");
+  if (NULL != speed) {
+    fgets(buffer, 128, speed);
+    pclose(speed);
+
+    int value;
+    sscanf(buffer, "%d", &value);
+    if (0 < value) return value;
+  }
+
+  return -1;
+}
+
 Agent* __create(const AgentSettings settings) {
   return new NetworkAgent(settings);
 }
@@ -33,6 +51,8 @@ NetworkAgent::NetworkAgent(const AgentSettings& settings) : Agent(settings) {}
 
 auto NetworkAgent::Metrics() -> const QHash<QString, Metric>& {
   m_settings.m_metrics["network_availability"].value = GetNetworkAvailabiliry();
+
+  m_settings.m_metrics["inet_throughput"].value = GetInetThroughput();
 
   return m_settings.m_metrics;
 }

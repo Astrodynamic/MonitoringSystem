@@ -21,7 +21,7 @@ static double GetRAMTotal() {
 static double GetRAMLoad() {
   struct sysinfo info;
   if (0 == sysinfo(&info)) {
-    return (info.totalram - info.freeram) / (info.totalram * 100.);
+    return (info.totalram - info.freeram) / (double)info.totalram * 100.;
   }
   return 0;
 }

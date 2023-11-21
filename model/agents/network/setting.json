@@ -10,8 +10,8 @@
     },
     {
       "name": "inet_throughput",
-      "comparison": ">=",
-      "critical_value": "1000"
+      "comparison": "==",
+      "critical_value": "-1"
     }
   ],
   "interval": 60

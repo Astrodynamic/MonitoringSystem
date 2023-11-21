@@ -120,14 +120,14 @@ static int GetSystemErrors() {
 }
 
 static int GetUserAuths() {
-  FILE *syslog;
+  FILE *auth;
   char buffer[128];
   memset(&buffer, 0, 128);
 
-  syslog = popen("grep \"session opened\" /var/log/auth.log | wc -l", "r");
-  if (NULL != syslog) {
-    fgets(buffer, 128, syslog);
-    pclose(syslog);
+  auth = popen("grep \"session opened\" /var/log/auth.log | wc -l", "r");
+  if (NULL != auth) {
+    fgets(buffer, 128, auth);
+    pclose(auth);
 
     int count;
     sscanf(buffer, "%d", &count);
@@ -170,6 +170,8 @@ auto SystemAgent::Metrics() -> const QHash<QString, Metric> & {
   m_settings.m_metrics["hard_read_time"].value = GetHardReadTime();
 
   m_settings.m_metrics["system_errors"].value = GetSystemErrors();
+
+  m_settings.m_metrics["user_auths"].value = GetUserAuths();
 
   return m_settings.m_metrics;
 }
