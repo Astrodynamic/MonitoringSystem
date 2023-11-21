@@ -28,7 +28,11 @@ auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings 
   if (settings.m_interval.isNull()) {
     settings.m_interval = QSharedPointer<QTimer>::create();
   }
-  settings.m_interval->start(root.value("interval").toInt() * 1e+3);
+  if (settings.m_enabled) {
+    settings.m_interval->start(root.value("interval").toInt() * 1e+3);
+  } else {
+    settings.m_interval->stop();
+  }
 
   settings.m_config.setFile(path);
 
