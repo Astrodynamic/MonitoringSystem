@@ -127,9 +127,9 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
   connect(agent->Settings().m_interval.data(), &QTimer::timeout, [this, index = m_data.size()]() {
       const auto& metrics = m_data[index].second->Metrics();
       for (auto it = metrics.begin(); it != metrics.end(); ++it) {
-          QString name = it.key().rightJustified(40, ' ');
-          QString value = QString(": %1 |").arg(it.value().value.toString().leftJustified(40, ' '));
-          emit updateLogs(name + value, LogManager::LogLevel::kINFO);
+        QString name = it.key().rightJustified(40);
+        QString value = it.value().value.toString().leftJustified(40);
+        emit updateLogs(name + " : " + value, LogManager::LogLevel::kINFO);
       }
   });
 

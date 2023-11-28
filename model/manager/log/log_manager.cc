@@ -28,7 +28,7 @@ auto LogManager::Write(const QString &message, LogLevel level) -> void {
   QDateTime now = QDateTime::currentDateTime();
   QString time = now.toString("yy-MM-dd HH:mm:ss");
 
-  m_buffer.enqueue(lvl + '|' + time  + '|' + message);
+  m_buffer.enqueue(lvl + '|' + time  + '|' + message + " |");
   emit logsChanged();
 
   Flush(m_buffer_size);

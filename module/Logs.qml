@@ -27,6 +27,7 @@ Frame {
       padding: 5
 
       text: modelData
+      textFormat: Text.MarkdownText
       font.pointSize: 16
 
       background: Rectangle {
