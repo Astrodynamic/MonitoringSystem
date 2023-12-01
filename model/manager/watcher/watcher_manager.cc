@@ -15,6 +15,11 @@ WatcherManager::~WatcherManager() {
 
 auto WatcherManager::setRoot(const QString &path) -> void {
   if (m_root != path) {
+    QDir tmp;
+    if (!tmp.exists(path)) {
+       tmp.mkpath(path);
+    }
+
     m_watcher->removePath(m_root);
     m_watcher->addPath(path);
     m_root = path;
