@@ -20,7 +20,26 @@ Page {
     }
     padding: 10
 
-    Column {}
+    Column {
+      Label {
+        text: "Telegram"
+        font.pointSize: 24
+      }
+
+      Row {
+        Label {
+          text: "Token: "
+          font.pointSize: 16
+        }
+      }
+
+      Row {
+        Label {
+          text: "ChatID: "
+          font.pointSize: 16
+        }
+      }
+    }
 
     background: Rectangle {
       anchors.fill: parent

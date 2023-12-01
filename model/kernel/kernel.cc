@@ -20,6 +20,7 @@ Kernel::Kernel(QObject *parent)
 
   connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager, &ConfigurationManager::loadConfiguration);
   connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager, &LogManager::Write);
+  connect(m_agent_manager, &AgentManager::updateNotification, m_notification_manager, &NotificationManager::notification);
 }
 
 Kernel::~Kernel() {
@@ -36,4 +37,8 @@ auto Kernel::agentManager() const -> AgentManager * {
 
 auto Kernel::logManager() const -> LogManager * {
     return m_log_manager;
+}
+
+auto Kernel::notificationManager() const -> NotificationManager * {
+    return m_notification_manager;
 }

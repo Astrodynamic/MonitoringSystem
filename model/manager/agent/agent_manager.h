@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QObject>
 
+#include <functional>
+
 #include "agent.h"
 #include "log_manager.h"
 
@@ -41,8 +43,11 @@ class AgentManager : public QAbstractListModel {
  signals:
   auto updateConfiguration(const QString & path, AgentSettings &settings) -> void;
   auto updateLogs(const QString& message, LogManager::LogLevel level = LogManager::LogLevel::kDEBUG) -> void;
+  auto updateNotification(const QString& message) -> void;
 
  private:
+  static const QMap<ComparisonOperator, std::function<bool(double, double)>> comparison;
+
   QVector<QPair<QSharedPointer<QLibrary>, QSharedPointer<Agent>>> m_data;
   QTimer m_timer;
 };

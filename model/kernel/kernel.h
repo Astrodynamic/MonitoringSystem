@@ -12,6 +12,7 @@ class Kernel : public QObject {
   Q_OBJECT
   Q_PROPERTY(AgentManager *agentManager READ agentManager CONSTANT)
   Q_PROPERTY(LogManager *logManager READ logManager CONSTANT)
+  Q_PROPERTY(NotificationManager *notificationManager READ notificationManager CONSTANT)
 
  public:
   explicit Kernel(QObject *parent = nullptr);
@@ -19,6 +20,7 @@ class Kernel : public QObject {
 
   auto agentManager() const -> AgentManager *;
   auto logManager() const -> LogManager *;
+  auto notificationManager() const -> NotificationManager *;
 
  private:
   LogManager *m_log_manager;

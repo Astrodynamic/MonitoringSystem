@@ -1,5 +1,13 @@
 #include "agent_manager.h"
 
+const QMap<ComparisonOperator, std::function<bool(double, double)>> AgentManager::comparison = {
+    {ComparisonOperator::kGreaterThanOrEqualTo, [](double lhs, double rhs) -> bool { return lhs >= rhs; }},
+    {ComparisonOperator::kGreaterThan, [](double lhs, double rhs) -> bool { return lhs > rhs; }},
+    {ComparisonOperator::kLessThanOrEqualTo, [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
+    {ComparisonOperator::kLessThan, [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
+    {ComparisonOperator::kEqualTo, [](double lhs, double rhs) -> bool { return lhs == rhs; }}
+};
+
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
     m_timer.start(1000);
 
@@ -128,8 +136,18 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
       const auto& metrics = m_data[index].second->Metrics();
       for (auto it = metrics.begin(); it != metrics.end(); ++it) {
         QString name = it.key().rightJustified(40);
-        QString value = it.value().value.toString().leftJustified(40);
-        emit updateLogs(name + " : " + value, LogManager::LogLevel::kINFO);
+
+        const QVariant & curr_v = it.value().value;
+        const QVariant & comp_v = it.value().comparisonValue;
+
+        QString value = curr_v.toString().leftJustified(40);
+
+        if (comparison[it.value().op](curr_v.toDouble(), comp_v.toDouble())) {
+            emit updateNotification(name + " : " + value);
+            emit updateLogs(name + " : " + value, LogManager::LogLevel::kWARNING);
+        } else {
+            emit updateLogs(name + " : " + value, LogManager::LogLevel::kINFO);
+        }
       }
   });
 
