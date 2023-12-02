@@ -1,5 +1,46 @@
 #include "notification_manager.h"
 
+#define FROM_MAIL     "<s21monitoring@rambler.ru>"
+#define TO_MAIL       "<Astrodynamic.fkg@yandex.ru>"
+
+static const char *payload_text =
+    "To: " TO_MAIL "\r\n"
+    "From: " FROM_MAIL "\r\n"
+    "Subject: SMTP example message\r\n"
+    "\r\n" /* empty line to divide headers from body, see RFC 5322 */
+    "The body of the message starts here.\r\n"
+    "\r\n"
+    "It could be a lot of lines, could be MIME encoded, whatever.\r\n"
+    "YA PIDARASKA\r\n";
+
+struct upload_status {
+    size_t bytes_read;
+};
+
+static size_t payload_source(char *ptr, size_t size, size_t nmemb, void *userp) {
+    struct upload_status *upload_ctx = (struct upload_status *)userp;
+    const char *data;
+    size_t room = size * nmemb;
+
+    if((size == 0) || (nmemb == 0) || ((size*nmemb) < 1)) {
+        return 0;
+    }
+
+    data = &payload_text[upload_ctx->bytes_read];
+
+    if(data) {
+        size_t len = strlen(data);
+        if(room < len)
+            len = room;
+        memcpy(ptr, data, len);
+        upload_ctx->bytes_read += len;
+
+        return len;
+    }
+
+    return 0;
+}
+
 NotificationManager::NotificationManager(QObject *parent) : QObject(parent) {}
 
 NotificationManager::~NotificationManager() {}
@@ -25,39 +66,40 @@ auto NotificationManager::sendTellegramNotification(const QString &msg) -> bool 
   return success;
 }
 
-auto NotificationManager::sendEmailNotification(const std::string& subject, const std::string& msg) -> bool {
+auto NotificationManager::sendEmailNotification(const QString &msg) -> bool {
   CURL* curl = curl_easy_init();
   if (!curl) {
     return false;
   }
 
-  // Установите URL-адрес SMTP-сервера и порт
-  curl_easy_setopt(curl, CURLOPT_URL, "smtp://smtp.example.com:587");
-
   // Установите имя пользователя и пароль для авторизации на SMTP-сервере
-  curl_easy_setopt(curl, CURLOPT_USERNAME, "username");
-  curl_easy_setopt(curl, CURLOPT_PASSWORD, "password");
+  curl_easy_setopt(curl, CURLOPT_USERNAME, "s21monitoring@rambler.ru");
+  curl_easy_setopt(curl, CURLOPT_PASSWORD, "S21monitoring");
+
+  // Установите URL-адрес SMTP-сервера и порт
+  curl_easy_setopt(curl, CURLOPT_URL, "smtp://smtp.rambler.ru:587");
 
   // Установите адрес отправителя
-  curl_easy_setopt(curl, CURLOPT_MAIL_FROM, m_from.c_str());
+  curl_easy_setopt(curl, CURLOPT_MAIL_FROM, "<s21monitoring@rambler.ru>");
 
   // Добавьте адрес получателя
-  struct curl_slist* recipients = curl_slist_append(nullptr, m_to.c_str());
+  struct curl_slist* recipients = curl_slist_append(nullptr, "<Astrodynamic.fkg@yandex.ru>");
   curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
   // Формирование заголовка письма
-  std::string header = "Subject: " + subject + "\r\n";
-  header += "To: " + m_to + "\r\n";
-  header += "From: " + m_from + "\r\n";
+  std::string header;
+  header += "To: <Astrodynamic.fkg@yandex.ru>\r\n";
+  header += "From: <s21monitoring@rambler.ru>\r\n";
+  header += "Subject: MonitoringSystem WARNIG\r\n";
 
   // Формирование тела письма
-  std::string email = header + "\r\n" + msg;
+  std::string email = header + "\r\n" + "WARNING";
 
   // Установка параметров отправки
-  curl_easy_setopt(curl, CURLOPT_READFUNCTION, nullptr);
-  curl_easy_setopt(curl, CURLOPT_READDATA, email.c_str());
+  struct upload_status upload_ctx = { 0 };
+  curl_easy_setopt(curl, CURLOPT_READFUNCTION, payload_source);
+  curl_easy_setopt(curl, CURLOPT_READDATA, &upload_ctx);
   curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-  curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, static_cast<curl_off_t>(email.length()));
 
   CURLcode res = curl_easy_perform(curl);
 
@@ -72,5 +114,5 @@ auto NotificationManager::sendEmailNotification(const std::string& subject, cons
 }
 
 void NotificationManager::notification(const QString &message) {
-    sendTellegramNotification(message);
+    sendEmailNotification(message);
 }

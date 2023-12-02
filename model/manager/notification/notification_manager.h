@@ -13,7 +13,7 @@ class NotificationManager : public QObject {
   virtual ~NotificationManager();
 
   auto sendTellegramNotification(const QString &msg) -> bool;
-  auto sendEmailNotification(const std::string& subject, const std::string& msg) -> bool;
+  auto sendEmailNotification(const QString &msg) -> bool;
 
  public slots:
   auto notification(const QString& message) -> void;
@@ -21,6 +21,7 @@ class NotificationManager : public QObject {
  private:
   QString m_token;
   QString m_chat;
+
   std::string m_from;
   std::string m_to;
 };

@@ -21,9 +21,7 @@ auto LogManager::Write(const QString &message, LogLevel level) -> void {
     { LogLevel::kERROR, "ERROR" }
   };
 
-  static const int field_width = 8;
-
-  QString lvl = QString("%1").arg(map.value(level), field_width);
+  QString lvl = QString("%1").arg(map.value(level), 12);
 
   QDateTime now = QDateTime::currentDateTime();
   QString time = now.toString("yy-MM-dd HH:mm:ss");
