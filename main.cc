@@ -9,6 +9,9 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
   QGuiApplication::setWindowIcon(QIcon(":/appicon.png"));
 
+  QCoreApplication::setOrganizationName("AstroGroup");
+  QCoreApplication::setApplicationName("MonitoringSystem");
+
   Kernel kernel;
 
   QQmlApplicationEngine engine;
