@@ -183,6 +183,10 @@ Page {
           onAccepted: notification.port = text
         }
       }
+
+      Item {
+        Layout.fillHeight: true
+      }
     }
 
     background: Rectangle {
