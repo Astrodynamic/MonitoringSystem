@@ -4,16 +4,14 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent) {}
 
 ConfigurationManager::~ConfigurationManager() {}
 
-auto ConfigurationManager::loadConfiguration(const QString &path,
-                                             AgentSettings &settings) -> bool {
+auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings &settings) -> bool {
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     qDebug() << "Не удалось открыть файл:" << file.errorString();
     return false;
   }
 
-  const QJsonDocument json =
-      QJsonDocument::fromJson(QByteArray(file.readAll()));
+  const QJsonDocument json =  QJsonDocument::fromJson(QByteArray(file.readAll()));
   if (json.isNull()) {
     qDebug() << "Ошибка при разборе JSON-документа.";
     return false;

@@ -2,9 +2,9 @@
 
 Kernel::Kernel(QObject *parent)
     : QObject(parent),
-      m_log_manager(new LogManager(QString(PROJECT_FOLDER), this)),
+      m_log_manager(new LogManager(QString(BUILD_DIR) + QDir::separator() + "logs", this)),
       m_agent_manager(new AgentManager(this)),
-      m_watcher_manager(new WatcherManager(QDir::homePath(), this)),
+      m_watcher_manager(new WatcherManager(QString(BUILD_DIR), this)),
       m_config_manager(new ConfigurationManager(this)),
       m_notification_manager(new NotificationManager(this)) {
   m_log_manager->BufferSize(20);
@@ -16,15 +16,11 @@ Kernel::Kernel(QObject *parent)
             m_agent_manager->registerAgent(lib, settings);
           });
 
-  m_watcher_manager->setRoot(QString(PROJECT_FOLDER) + QDir::separator() +
-                             "agents");
+  m_watcher_manager->setRoot(QString(BUILD_DIR) + QDir::separator() + "agents");
 
-  connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager,
-          &ConfigurationManager::loadConfiguration);
-  connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager,
-          &LogManager::Write);
-  connect(m_agent_manager, &AgentManager::updateNotification,
-          m_notification_manager, &NotificationManager::notification);
+  connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager, &ConfigurationManager::loadConfiguration);
+  connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager, &LogManager::Write);
+  connect(m_agent_manager, &AgentManager::updateNotification, m_notification_manager, &NotificationManager::notification);
 }
 
 Kernel::~Kernel() {

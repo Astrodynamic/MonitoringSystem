@@ -57,6 +57,10 @@ qt_add_executable(${PROJECT_NAME}
     ${PROJECT_RESOURCES}
 )
 
+add_definitions(
+    -DBUILD_DIR="${CMAKE_BINARY_DIR}"
+)
+
 qt_add_resources(${PROJECT_NAME} "icon"
     PREFIX "/"
     BASE data/icon
@@ -79,6 +83,11 @@ qt_add_resources(${PROJECT_NAME} "controls"
     BASE styles
     FILES
     styles/qtquickcontrols2.conf
+)
+
+target_compile_features(${PROJECT_NAME}
+  PUBLIC
+  cxx_std_17
 )
 
 target_compile_options(
@@ -115,10 +124,16 @@ else()
     message(FATAL_ERROR "unsupported platform")
 endif()
 
-set(PROJECT_FOLDER "/tmp/MonitoringSystem")
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD COMMAND
+    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/agents
+)
 
-add_definitions(
-    -DPROJECT_FOLDER="${PROJECT_FOLDER}"
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD COMMAND
+    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/logs
 )
 
 find_program(CPPCHECK cppcheck)

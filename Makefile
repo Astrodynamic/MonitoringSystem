@@ -1,5 +1,4 @@
 .PHONY: all build rebuild unistall clean cppcheck clang-format tests dist dvi
-INSTALL_PATH=/tmp/MonitoringSystem
 
 all: build
 
@@ -8,7 +7,7 @@ build: install
 rebuild: clean install
 
 install:
-	cmake -S . -B ./build -DPROJECT_FOLDER=${INSTALL_PATH}
+	cmake -S . -B ./build
 	cmake --build ./build -j $(nproc)
 
 unistall:
@@ -25,7 +24,7 @@ endef
 $(foreach agent, cpu memory network system, $(eval $(call AGENT_TARGET,$(agent))))
 
 %_agent:
-	cmake -S ./model/agents/$*/ -B ./model/agents/$*/build -DLBD_TARGET=${INSTALL_PATH}
+	cmake -S ./model/agents/$*/ -B ./model/agents/$*/build -DLBD_TARGET=${CURDIR}/build
 	cmake --build ./model/agents/$*/build -j$(nproc)
 
 cppcheck:

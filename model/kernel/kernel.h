@@ -12,8 +12,7 @@ class Kernel : public QObject {
   Q_OBJECT
   Q_PROPERTY(AgentManager *agentManager READ agentManager CONSTANT)
   Q_PROPERTY(LogManager *logManager READ logManager CONSTANT)
-  Q_PROPERTY(NotificationManager *notificationManager READ notificationManager
-                 CONSTANT)
+  Q_PROPERTY(NotificationManager *notificationManager READ notificationManager CONSTANT)
 
  public:
   explicit Kernel(QObject *parent = nullptr);

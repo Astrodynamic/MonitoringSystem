@@ -6,8 +6,7 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent) {
 
 NotificationManager::~NotificationManager() { saveSettings(); }
 
-auto NotificationManager::sendTellegramNotification(const QString &msg)
-    -> bool {
+auto NotificationManager::sendTellegramNotification(const QString &msg) -> bool {
   bool success{true};
   QString url = "https://api.telegram.org/bot" + m_token + "/sendMessage";
   QString post_data = "chat_id=" + m_chat + "&text=" + msg;
@@ -16,8 +15,7 @@ auto NotificationManager::sendTellegramNotification(const QString &msg)
 
   if (curl) {
     curl_easy_setopt(curl, CURLOPT_URL, url.toLocal8Bit().constData());
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS,
-                     post_data.toLocal8Bit().constData());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data.toLocal8Bit().constData());
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
@@ -40,17 +38,14 @@ auto NotificationManager::sendEmailNotification(const QString &msg) -> bool {
   curl_easy_setopt(curl, CURLOPT_PORT, m_port);
 
   // Установите имя пользователя и пароль для авторизации на SMTP-сервере
-  curl_easy_setopt(curl, CURLOPT_USERNAME,
-                   m_username.toLocal8Bit().constData());
-  curl_easy_setopt(curl, CURLOPT_PASSWORD,
-                   m_password.toLocal8Bit().constData());
+  curl_easy_setopt(curl, CURLOPT_USERNAME, m_username.toLocal8Bit().constData());
+  curl_easy_setopt(curl, CURLOPT_PASSWORD, m_password.toLocal8Bit().constData());
 
   // Установите адрес отправителя
   curl_easy_setopt(curl, CURLOPT_MAIL_FROM, m_from.toLocal8Bit().constData());
 
   // Добавьте адрес получателя
-  struct curl_slist *recipients =
-      curl_slist_append(nullptr, m_to.toLocal8Bit().constData());
+  struct curl_slist *recipients = curl_slist_append(nullptr, m_to.toLocal8Bit().constData());
   curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
   // Формирование заголовка и тела письма
@@ -68,8 +63,7 @@ auto NotificationManager::sendEmailNotification(const QString &msg) -> bool {
   CURLcode res = curl_easy_perform(curl);
 
   if (res != CURLE_OK) {
-    fprintf(stderr, "curl_easy_perform() failed: %s\n",
-            curl_easy_strerror(res));
+    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
   }
 
   curl_slist_free_all(recipients);
@@ -87,8 +81,7 @@ void NotificationManager::notification(const QString &message) {
   }
 }
 
-size_t NotificationManager::read(char *ptr, size_t size, size_t nmemb,
-                                 void *userp) {
+size_t NotificationManager::read(char *ptr, size_t size, size_t nmemb, void *userp) {
   struct ReadData *rd = (struct ReadData *)userp;
 
   if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {

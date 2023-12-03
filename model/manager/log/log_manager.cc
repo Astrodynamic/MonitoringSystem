@@ -1,14 +1,9 @@
 #include "log_manager.h"
 
 LogManager::LogManager(QString path, QObject *parent)
-    : QObject(parent),
-      m_path(path + QDir::separator() + "logs"),
-      m_buffer_size(100) {
-  QDir dir;
-  if (!dir.exists(m_path)) {
-    dir.mkpath(m_path);
-  }
-}
+    : QObject(parent)
+    , m_path(path)
+    , m_buffer_size(100) {}
 
 LogManager::~LogManager() { Flush(); }
 
@@ -44,8 +39,7 @@ auto LogManager::Read() const -> QStringList {
 auto LogManager::Flush(qsizetype leave) -> void {
   if (m_buffer.size() > leave) {
     QDateTime now = QDateTime::currentDateTime();
-    QFile file(m_path + QDir::separator() +
-               QString("log_%1.txt").arg(now.toString("yyyy-MM-dd")));
+    QFile file(m_path + QDir::separator() + QString("log_%1.txt").arg(now.toString("yyyy-MM-dd")));
     if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
       QTextStream m_stream(&file);
       m_stream.setEncoding(QStringConverter::Utf8);

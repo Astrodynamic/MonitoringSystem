@@ -53,8 +53,7 @@ auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
   } else if (role == kConfigRole) {
     return QVariant::fromValue(settings.m_config);
   } else if (role == kTimerRole) {
-    return QVariant::fromValue(
-        QTime(0, 0).addMSecs(settings.m_timer.elapsed()));
+    return QVariant::fromValue(QTime(0, 0).addMSecs(settings.m_timer.elapsed()));
   } else if (role == kMetricsRole) {
     return QVariant::fromValue(settings.m_metrics);
   }
@@ -71,8 +70,7 @@ auto AgentManager::roleNames() const -> QHash<int, QByteArray> {
   return roles;
 }
 
-auto AgentManager::setData(const QModelIndex &index, const QVariant &value,
-                           int role) -> bool {
+auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) -> bool {
   AgentSettings &settings = m_data[index.row()].second->Settings();
   if (role == kEnabledRole) {
     settings.m_enabled = value.toBool();
@@ -101,8 +99,7 @@ auto AgentManager::flags(const QModelIndex &index) const -> Qt::ItemFlags {
   return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
-auto AgentManager::removeRows(int row, int count, const QModelIndex &parent)
-    -> bool {
+auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> bool {
   if (!parent.isValid()) {
     return false;
   }
@@ -118,8 +115,7 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent)
   return true;
 }
 
-auto AgentManager::registerAgent(const QString &path, AgentSettings &settings)
-    -> bool {
+auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -> bool {
   QSharedPointer<QLibrary> library(new QLibrary(path));
   if (!library->load()) {
     qDebug() << "Failed to load library:" << library->errorString();
@@ -149,8 +145,7 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings)
 
           if (comparison[it.value().op](curr_v.toDouble(), comp_v.toDouble())) {
             emit updateNotification(name + " : " + value);
-            emit updateLogs(name + " : " + value,
-                            LogManager::LogLevel::kWARNING);
+            emit updateLogs(name + " : " + value, LogManager::LogLevel::kWARNING);
           } else {
             emit updateLogs(name + " : " + value, LogManager::LogLevel::kINFO);
           }
