@@ -7,20 +7,24 @@ Kernel::Kernel(QObject *parent)
       m_watcher_manager(new WatcherManager(QDir::homePath(), this)),
       m_config_manager(new ConfigurationManager(this)),
       m_notification_manager(new NotificationManager(this)) {
-
   m_log_manager->BufferSize(20);
 
-  connect(m_watcher_manager, &WatcherManager::FileDetected, [this](const QString conf, QString lib) {
+  connect(m_watcher_manager, &WatcherManager::FileDetected,
+          [this](const QString conf, QString lib) {
             AgentSettings settings;
             m_config_manager->loadConfiguration(conf, settings);
             m_agent_manager->registerAgent(lib, settings);
           });
 
-  m_watcher_manager->setRoot(QString(PROJECT_FOLDER) + QDir::separator() + "agents");
+  m_watcher_manager->setRoot(QString(PROJECT_FOLDER) + QDir::separator() +
+                             "agents");
 
-  connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager, &ConfigurationManager::loadConfiguration);
-  connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager, &LogManager::Write);
-  connect(m_agent_manager, &AgentManager::updateNotification, m_notification_manager, &NotificationManager::notification);
+  connect(m_agent_manager, &AgentManager::updateConfiguration, m_config_manager,
+          &ConfigurationManager::loadConfiguration);
+  connect(m_agent_manager, &AgentManager::updateLogs, m_log_manager,
+          &LogManager::Write);
+  connect(m_agent_manager, &AgentManager::updateNotification,
+          m_notification_manager, &NotificationManager::notification);
 }
 
 Kernel::~Kernel() {
@@ -31,14 +35,10 @@ Kernel::~Kernel() {
   delete m_notification_manager;
 }
 
-auto Kernel::agentManager() const -> AgentManager * {
-    return m_agent_manager;
-}
+auto Kernel::agentManager() const -> AgentManager * { return m_agent_manager; }
 
-auto Kernel::logManager() const -> LogManager * {
-    return m_log_manager;
-}
+auto Kernel::logManager() const -> LogManager * { return m_log_manager; }
 
 auto Kernel::notificationManager() const -> NotificationManager * {
-    return m_notification_manager;
+  return m_notification_manager;
 }

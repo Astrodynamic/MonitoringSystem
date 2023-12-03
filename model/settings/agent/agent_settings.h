@@ -4,11 +4,11 @@
 #include <QElapsedTimer>
 #include <QHash>
 #include <QPair>
+#include <QSharedPointer>
 #include <QString>
 #include <QTime>
-#include <QVariant>
 #include <QTimer>
-#include <QSharedPointer>
+#include <QVariant>
 
 enum class ComparisonOperator {
   kLessThan = 0,

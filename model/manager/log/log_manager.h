@@ -29,7 +29,7 @@ class LogManager : public QObject {
   auto Write(const QString& message, LogLevel level = LogLevel::kDEBUG) -> void;
 
  signals:
-    void logsChanged();
+  void logsChanged();
 
  private:
   QString m_path;

@@ -26,31 +26,31 @@ include_directories(
 )
 
 set(HEADERS
-    model/manager/notification/notification_manager.h
-    model/manager/watcher/watcher_manager.h
-    model/manager/config/config_manager.h
-    model/settings/agent/agent_settings.h
-    model/manager/agent/agent_manager.h
-    model/manager/log/log_manager.h
-    model/agents/agent/agent.h
-    model/kernel/kernel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/notification/notification_manager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/watcher/watcher_manager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/config/config_manager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/settings/agent/agent_settings.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/agent/agent_manager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/log/log_manager.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/agent/agent.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel/kernel.h
 )
 
 set(SOURCES
-    model/manager/notification/notification_manager.cc
-    model/manager/watcher/watcher_manager.cc
-    model/manager/config/config_manager.cc
-    model/settings/agent/agent_settings.cc
-    model/manager/agent/agent_manager.cc
-    model/manager/log/log_manager.cc
-    model/agents/agent/agent.cc
-    model/kernel/kernel.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/notification/notification_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/watcher/watcher_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/config/config_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/settings/agent/agent_settings.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/agent/agent_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/manager/log/log_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/agents/agent/agent.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/kernel/kernel.cc
 )
 
 set(PROJECT_RESOURCES
     ${HEADERS}
     ${SOURCES}
-    main.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cc
 )
 
 qt_add_executable(${PROJECT_NAME}
@@ -85,10 +85,10 @@ target_compile_options(
     ${PROJECT_NAME}
     PRIVATE
 
-    # -Wall
-    # -Werror
-    # -Wextra
-    # -Wpedantic
+    -Wall
+    -Werror
+    -Wextra
+    -Wpedantic
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -121,7 +121,6 @@ add_definitions(
     -DPROJECT_FOLDER="${PROJECT_FOLDER}"
 )
 
-# Add cppcheck
 find_program(CPPCHECK cppcheck)
 
 if(CPPCHECK)
@@ -134,6 +133,10 @@ if(CPPCHECK)
         "--language=c++"
         "--std=c++17"
         "--suppress=missingInclude"
+        "--suppress=unusedFunction"
+        "--suppress=unusedStructMember"
+        "--suppress=unknownMacro"
+        "--suppress=constParameter"
         "--verbose"
     )
     add_custom_target(
@@ -144,14 +147,13 @@ else()
     message(STATUS "cppcheck not found")
 endif()
 
-# Add clang-format
 find_program(CLANG_FORMAT clang-format)
 
 if(CLANG_FORMAT)
     message(STATUS "clang-format found: ${CLANG_FORMAT}")
     list(
         APPEND CLANG_ARGS
-        "-i"
+        "-n"
         "-style=Google"
         "--verbose"
     )

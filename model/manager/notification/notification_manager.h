@@ -1,8 +1,9 @@
 #pragma once
 
+#include <curl/curl.h>
+
 #include <QObject>
 #include <QSettings>
-#include <curl/curl.h>
 
 class NotificationManager : public QObject {
   Q_OBJECT
@@ -27,7 +28,7 @@ class NotificationManager : public QObject {
   auto sendEmailNotification(const QString &msg) -> bool;
 
  public slots:
-  auto notification(const QString& message) -> void;
+  auto notification(const QString &message) -> void;
 
  signals:
   void tokenChanged();
@@ -42,7 +43,7 @@ class NotificationManager : public QObject {
   void telegramChanged();
   void mailChanged();
 
-  private:
+ private:
   struct ReadData {
     size_t bytes;
   };

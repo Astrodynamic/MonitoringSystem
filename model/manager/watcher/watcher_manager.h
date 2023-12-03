@@ -10,7 +10,7 @@ class WatcherManager : public QObject {
   Q_OBJECT
 
  public:
-  explicit WatcherManager(const QString & path, QObject *parent = nullptr);
+  explicit WatcherManager(const QString &path, QObject *parent = nullptr);
   virtual ~WatcherManager();
 
  signals:

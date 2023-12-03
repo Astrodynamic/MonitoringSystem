@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QObject>
 #include <QFile>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
+#include <QObject>
 
 #include "agent_settings.h"
 
@@ -16,5 +16,5 @@ class ConfigurationManager : public QObject {
   virtual ~ConfigurationManager();
 
  public slots:
-  auto loadConfiguration(const QString & path, AgentSettings &settings) -> bool;
+  auto loadConfiguration(const QString &path, AgentSettings &settings) -> bool;
 };

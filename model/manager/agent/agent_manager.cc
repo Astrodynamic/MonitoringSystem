@@ -1,32 +1,35 @@
 #include "agent_manager.h"
 
-const QMap<ComparisonOperator, std::function<bool(double, double)>> AgentManager::comparison = {
-    {ComparisonOperator::kGreaterThanOrEqualTo, [](double lhs, double rhs) -> bool { return lhs >= rhs; }},
-    {ComparisonOperator::kGreaterThan, [](double lhs, double rhs) -> bool { return lhs > rhs; }},
-    {ComparisonOperator::kLessThanOrEqualTo, [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
-    {ComparisonOperator::kLessThan, [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
-    {ComparisonOperator::kEqualTo, [](double lhs, double rhs) -> bool { return lhs == rhs; }}
-};
+const QMap<ComparisonOperator, std::function<bool(double, double)>>
+    AgentManager::comparison = {
+        {ComparisonOperator::kGreaterThanOrEqualTo,
+         [](double lhs, double rhs) -> bool { return lhs >= rhs; }},
+        {ComparisonOperator::kGreaterThan,
+         [](double lhs, double rhs) -> bool { return lhs > rhs; }},
+        {ComparisonOperator::kLessThanOrEqualTo,
+         [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
+        {ComparisonOperator::kLessThan,
+         [](double lhs, double rhs) -> bool { return lhs <= rhs; }},
+        {ComparisonOperator::kEqualTo,
+         [](double lhs, double rhs) -> bool { return lhs == rhs; }}};
 
 AgentManager::AgentManager(QObject *parent) : QAbstractListModel(parent) {
-    m_timer.start(1000);
+  m_timer.start(1000);
 
-    connect(&m_timer, &QTimer::timeout, [this]() {
-        for (qsizetype idx{}; idx < m_data.size(); ++idx) {
-            auto index = createIndex(idx, 0);
-            auto &setting = m_data[idx].second->Settings();
-            if (setting.m_enabled) {
-                emit dataChanged(index, index, QVector<int>() << kTimerRole);
-            } else {
-                setting.m_timer.start();
-            }
-        }
-    });
+  connect(&m_timer, &QTimer::timeout, [this]() {
+    for (qsizetype idx{}; idx < m_data.size(); ++idx) {
+      auto index = createIndex(idx, 0);
+      auto &setting = m_data[idx].second->Settings();
+      if (setting.m_enabled) {
+        emit dataChanged(index, index, QVector<int>() << kTimerRole);
+      } else {
+        setting.m_timer.start();
+      }
+    }
+  });
 }
 
-AgentManager::~AgentManager() {
-  removeRows(0, m_data.size());
-}
+AgentManager::~AgentManager() { removeRows(0, m_data.size()); }
 
 auto AgentManager::rowCount(const QModelIndex &parent) const -> int {
   if (parent.isValid()) return 0;
@@ -50,7 +53,8 @@ auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
   } else if (role == kConfigRole) {
     return QVariant::fromValue(settings.m_config);
   } else if (role == kTimerRole) {
-    return QVariant::fromValue(QTime(0, 0).addMSecs(settings.m_timer.elapsed()));
+    return QVariant::fromValue(
+        QTime(0, 0).addMSecs(settings.m_timer.elapsed()));
   } else if (role == kMetricsRole) {
     return QVariant::fromValue(settings.m_metrics);
   }
@@ -59,19 +63,16 @@ auto AgentManager::data(const QModelIndex &index, int role) const -> QVariant {
 
 auto AgentManager::roleNames() const -> QHash<int, QByteArray> {
   static const QHash<int, QByteArray> roles{
-    {kEnabledRole, "enabled"},
-    {kNameRole, "name"},
-    {kTypeRole, "type"},
-    {kIntervalRole, "interval"},
-    {kConfigRole, "config"},
-    {kTimerRole, "timer"},
-    {kMetricsRole, "metrics"}
-  };
+      {kEnabledRole, "enabled"}, {kNameRole, "name"},
+      {kTypeRole, "type"},       {kIntervalRole, "interval"},
+      {kConfigRole, "config"},   {kTimerRole, "timer"},
+      {kMetricsRole, "metrics"}};
 
   return roles;
 }
 
-auto AgentManager::setData(const QModelIndex &index, const QVariant &value, int role) -> bool {
+auto AgentManager::setData(const QModelIndex &index, const QVariant &value,
+                           int role) -> bool {
   AgentSettings &settings = m_data[index.row()].second->Settings();
   if (role == kEnabledRole) {
     settings.m_enabled = value.toBool();
@@ -100,7 +101,8 @@ auto AgentManager::flags(const QModelIndex &index) const -> Qt::ItemFlags {
   return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
-auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> bool {
+auto AgentManager::removeRows(int row, int count, const QModelIndex &parent)
+    -> bool {
   if (!parent.isValid()) {
     return false;
   }
@@ -116,7 +118,8 @@ auto AgentManager::removeRows(int row, int count, const QModelIndex &parent) -> 
   return true;
 }
 
-auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -> bool {
+auto AgentManager::registerAgent(const QString &path, AgentSettings &settings)
+    -> bool {
   QSharedPointer<QLibrary> library(new QLibrary(path));
   if (!library->load()) {
     qDebug() << "Failed to load library:" << library->errorString();
@@ -132,24 +135,27 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
 
   beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
   auto agent = QSharedPointer<Agent>(__create(settings));
-  connect(agent->Settings().m_interval.data(), &QTimer::timeout, [this, index = m_data.size()]() {
-      const auto& metrics = m_data[index].second->Metrics();
-      for (auto it = metrics.begin(); it != metrics.end(); ++it) {
-        QString name = it.key().rightJustified(40);
+  connect(
+      agent->Settings().m_interval.data(), &QTimer::timeout,
+      [this, index = m_data.size()]() {
+        const auto &metrics = m_data[index].second->Metrics();
+        for (auto it = metrics.begin(); it != metrics.end(); ++it) {
+          QString name = it.key().rightJustified(40);
 
-        const QVariant & curr_v = it.value().value;
-        const QVariant & comp_v = it.value().comparisonValue;
+          const QVariant &curr_v = it.value().value;
+          const QVariant &comp_v = it.value().comparisonValue;
 
-        QString value = curr_v.toString().leftJustified(40);
+          QString value = curr_v.toString().leftJustified(40);
 
-        if (comparison[it.value().op](curr_v.toDouble(), comp_v.toDouble())) {
+          if (comparison[it.value().op](curr_v.toDouble(), comp_v.toDouble())) {
             emit updateNotification(name + " : " + value);
-            emit updateLogs(name + " : " + value, LogManager::LogLevel::kWARNING);
-        } else {
+            emit updateLogs(name + " : " + value,
+                            LogManager::LogLevel::kWARNING);
+          } else {
             emit updateLogs(name + " : " + value, LogManager::LogLevel::kINFO);
+          }
         }
-      }
-  });
+      });
 
   m_data.push_back({library, agent});
   endInsertRows();
@@ -158,30 +164,30 @@ auto AgentManager::registerAgent(const QString &path, AgentSettings &settings) -
 }
 
 auto AgentManager::config(int index) -> QString {
-    if (index < 0 || index > m_data.size()) {
-        return "";
-    }
+  if (index < 0 || index > m_data.size()) {
+    return "";
+  }
 
-    QString path = m_data[index].second->Settings().m_config.absoluteFilePath();
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return file.errorString();
-    }
-    return file.readAll();
+  QString path = m_data[index].second->Settings().m_config.absoluteFilePath();
+  QFile file(path);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    return file.errorString();
+  }
+  return file.readAll();
 }
 
 auto AgentManager::config(int index, QString json) -> void {
-    if (index >= 0 && index < m_data.size()) {
-        auto &settings = m_data[index].second->Settings();
-        QString path = settings.m_config.absoluteFilePath();
-        QFile file(path);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream out(&file);
-            out << json;
-        }
-        file.close();
-
-        emit updateConfiguration(path, settings);
-        emit dataChanged(createIndex(index, 0), createIndex(index, 0));
+  if (index >= 0 && index < m_data.size()) {
+    auto &settings = m_data[index].second->Settings();
+    QString path = settings.m_config.absoluteFilePath();
+    QFile file(path);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+      QTextStream out(&file);
+      out << json;
     }
+    file.close();
+
+    emit updateConfiguration(path, settings);
+    emit dataChanged(createIndex(index, 0), createIndex(index, 0));
+  }
 }

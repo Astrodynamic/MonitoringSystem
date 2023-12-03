@@ -4,14 +4,16 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent) {}
 
 ConfigurationManager::~ConfigurationManager() {}
 
-auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings &settings) -> bool {
+auto ConfigurationManager::loadConfiguration(const QString &path,
+                                             AgentSettings &settings) -> bool {
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     qDebug() << "Не удалось открыть файл:" << file.errorString();
     return false;
   }
 
-  const QJsonDocument json = QJsonDocument::fromJson(QByteArray(file.readAll()));
+  const QJsonDocument json =
+      QJsonDocument::fromJson(QByteArray(file.readAll()));
   if (json.isNull()) {
     qDebug() << "Ошибка при разборе JSON-документа.";
     return false;
@@ -43,12 +45,11 @@ auto ConfigurationManager::loadConfiguration(const QString &path, AgentSettings 
       {">", ComparisonOperator::kGreaterThan},
       {"<=", ComparisonOperator::kLessThanOrEqualTo},
       {"<", ComparisonOperator::kLessThan},
-      {"==", ComparisonOperator::kEqualTo}
-  };
+      {"==", ComparisonOperator::kEqualTo}};
 
   for (const QJsonValue &metric : metrics) {
     const QJsonObject metricObject = metric.toObject();
-      settings.m_metrics[metricObject.value("name").toString()] =
+    settings.m_metrics[metricObject.value("name").toString()] =
         Metric{metricObject.value("value").toVariant(),
                op[metricObject.value("comparison").toString()],
                metricObject.value("critical_value").toVariant()};

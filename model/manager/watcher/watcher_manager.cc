@@ -1,23 +1,20 @@
 #include "watcher_manager.h"
 
-WatcherManager::WatcherManager(const QString & path, QObject *parent)
-  : QObject(parent)
-  , m_watcher(new QFileSystemWatcher(this))
-  , m_root{path} {
+WatcherManager::WatcherManager(const QString &path, QObject *parent)
+    : QObject(parent), m_watcher(new QFileSystemWatcher(this)), m_root{path} {
   m_watcher->addPath(m_root);
 
-  connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, &WatcherManager::directoryChanged);
+  connect(m_watcher, &QFileSystemWatcher::directoryChanged, this,
+          &WatcherManager::directoryChanged);
 }
 
-WatcherManager::~WatcherManager() {
-  delete m_watcher;
-}
+WatcherManager::~WatcherManager() { delete m_watcher; }
 
 auto WatcherManager::setRoot(const QString &path) -> void {
   if (m_root != path) {
     QDir tmp;
     if (!tmp.exists(path)) {
-       tmp.mkpath(path);
+      tmp.mkpath(path);
     }
 
     m_watcher->removePath(m_root);
@@ -44,11 +41,14 @@ auto WatcherManager::directoryChanged(const QString &path) -> void {
       }
     }
   } else {
-    QFileInfoList c_files = dir.entryInfoList(QStringList() << "*.json", QDir::Files | QDir::NoDotAndDotDot);
-    QFileInfoList l_files = dir.entryInfoList(QStringList() << "*.so", QDir::Files | QDir::NoDotAndDotDot);
+    QFileInfoList c_files = dir.entryInfoList(
+        QStringList() << "*.json", QDir::Files | QDir::NoDotAndDotDot);
+    QFileInfoList l_files = dir.entryInfoList(
+        QStringList() << "*.so", QDir::Files | QDir::NoDotAndDotDot);
 
     if (!c_files.isEmpty() && !l_files.isEmpty()) {
-      emit FileDetected(c_files.first().absoluteFilePath(), l_files.first().absoluteFilePath());
+      emit FileDetected(c_files.first().absoluteFilePath(),
+                        l_files.first().absoluteFilePath());
       m_watcher->removePath(path);
     }
   }
