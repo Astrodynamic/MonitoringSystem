@@ -2,8 +2,13 @@
 
 LogManager::LogManager(QString path, QObject *parent)
   : QObject(parent)
-  , m_path(path)
-  , m_buffer_size(100) {}
+  , m_path(path + QDir::separator() + "logs")
+  , m_buffer_size(100) {
+    QDir dir;
+    if (!dir.exists(m_path)) {
+        dir.mkpath(m_path);
+    }
+}
 
 LogManager::~LogManager() {
   Flush();

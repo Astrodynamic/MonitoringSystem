@@ -57,10 +57,6 @@ qt_add_executable(${PROJECT_NAME}
     ${PROJECT_RESOURCES}
 )
 
-add_definitions(
-    -DBUILD_DIR="${CMAKE_BINARY_DIR}"
-)
-
 qt_add_resources(${PROJECT_NAME} "icon"
     PREFIX "/"
     BASE data/icon
@@ -85,11 +81,6 @@ qt_add_resources(${PROJECT_NAME} "controls"
     styles/qtquickcontrols2.conf
 )
 
-target_compile_features(${PROJECT_NAME}
-  PUBLIC
-  cxx_std_17
-)
-
 target_compile_options(
     ${PROJECT_NAME}
     PRIVATE
@@ -98,26 +89,14 @@ target_compile_options(
     # -Werror
     # -Wextra
     # -Wpedantic
-    # -fsanitize=address
-)
-
-target_link_options(
-    ${PROJECT_NAME}
-    PRIVATE
-
-    # -fsanitize=address
-)
-
-target_compile_definitions(${PROJECT_NAME}
-    PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
 )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    ${CURL_LIBRARIES}
     Qt6::Gui
     Qt6::Core
     Qt6::Quick
+    CURL::libcurl
     Qt6::QuickControls2
 )
 
@@ -132,23 +111,14 @@ elseif(UNIX AND NOT APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INSTALL_RPATH "$ORIGIN"
     )
-elseif(WIN32)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        WIN32_EXECUTABLE TRUE
-        LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
-    )
+else()
+    message(FATAL_ERROR "unsupported platform")
 endif()
 
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD COMMAND
-    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/agents
-)
+set(PROJECT_FOLDER "/tmp/MonitoringSystem")
 
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD COMMAND
-    ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/logs
+add_definitions(
+    -DPROJECT_FOLDER="${PROJECT_FOLDER}"
 )
 
 # Add cppcheck
